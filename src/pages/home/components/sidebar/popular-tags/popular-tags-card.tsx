@@ -26,7 +26,7 @@ const PopularTagsCard: React.FC<PopularTagsProps> = ({
         {tags.map((tag) => (
           <button
             key={tag.name}
-            className='rounded-full bg-[#4263EB] px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-[#4263EB]/90'
+            className='rounded-md bg-[#4263EB] px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-[#4263EB]/90'
           >
             {tag.name}
           </button>

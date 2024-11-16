@@ -2,7 +2,7 @@ import BlogCard from '@/pages/home/components/blog-card-wrapper/blog-card/blog-c
 
 const BlogCardsWrapper: React.FC = () => {
   return (
-    <section>
+    <section className='flex flex-col space-y-8 md:w-2/3'>
       <BlogCard
         title='Your Title'
         author='Author Name'
