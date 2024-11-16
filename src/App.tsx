@@ -1,28 +1,12 @@
-import React from 'react';
+import { Layout } from '@/components/layout';
+import { Home, Write, About } from '@/pages';
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Navigate,
   Route,
   RouterProvider,
-  Outlet,
 } from 'react-router-dom';
-import Navbar from '@/components/navbar';
-
-const Home: React.FC = () => <div>Home Page</div>;
-const Write: React.FC = () => <div>Write Page</div>;
-const About: React.FC = () => <div>About Page</div>;
-
-const Layout: React.FC = () => {
-  return (
-    <div>
-      <Navbar />
-      <main className='p-4'>
-        <Outlet />
-      </main>
-    </div>
-  );
-};
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,7 +16,7 @@ const router = createBrowserRouter(
         <Route path='/write' element={<Write />} />
         <Route path='/about' element={<About />} />
       </Route>
-      {/* Catch-all redirect to Home */}
+
       <Route path='*' element={<Navigate to='/' replace />} />
     </>,
   ),
