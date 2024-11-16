@@ -17,7 +17,7 @@ const PopularTagsCard: React.FC<PopularTagsProps> = ({
     { name: 'Machine Learning', href: '#machine-learning' },
   ],
 }) => (
-  <Card className='w-full max-w-md bg-white shadow-sm'>
+  <Card className='w-full max-w-md bg-background shadow-sm'>
     <CardHeader className='pb-3'>
       <CardTitle className='text-lg font-semibold'>Popular Tags</CardTitle>
     </CardHeader>

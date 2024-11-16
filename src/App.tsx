@@ -7,6 +7,7 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,7 +24,11 @@ const router = createBrowserRouter(
 );
 
 const App: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 };
 
 export default App;

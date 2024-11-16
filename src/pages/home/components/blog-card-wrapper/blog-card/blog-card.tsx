@@ -37,7 +37,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
           <img
             src={imageUrl}
             alt={title}
-            className='h-full w-full object-cover'
+            className='h-full w-full rounded-lg object-cover'
           />
         </div>
         <CardHeader>
@@ -45,14 +45,14 @@ const BlogCard: React.FC<BlogCardProps> = ({
             <h2 className='text-2xl font-bold tracking-tight'>{title}</h2>
             <div className='flex items-center gap-4 text-sm text-muted-foreground'>
               <div className='flex items-center gap-1'>
-                <User className='h-4 w-4' />
+                <User className='size-4' />
                 <span>{author}</span>
               </div>
               <span>•</span>
               <span>{date}</span>
               <span>•</span>
               <div className='flex items-center gap-1'>
-                <Clock className='h-4 w-4' />
+                <Clock className='size-4' />
                 <span>{readTime}</span>
               </div>
             </div>
