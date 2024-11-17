@@ -1,9 +1,8 @@
 import { Layout } from '@/components/layout';
-import { Home, Write, About } from '@/pages';
+import { Home, Write, About, NotFound } from '@/pages';
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Navigate,
   Route,
   RouterProvider,
 } from 'react-router-dom';
@@ -18,7 +17,7 @@ const router = createBrowserRouter(
         <Route path='/about' element={<About />} />
       </Route>
 
-      <Route path='*' element={<Navigate to='/' replace />} />
+      <Route path='*' element={<NotFound />} />
     </>,
   ),
 );
