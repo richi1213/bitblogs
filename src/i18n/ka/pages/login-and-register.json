@@ -1,0 +1,17 @@
+{
+  "login-to-bb": "შესვლა BitBlogs-ში",
+  "sign-up-for-bb": "რეგისტრაცია BitBlogs-ში",
+  "enter-your-info": "შეიყვანეთ თქვენი ინფორმაცია ავტორიზაციისთვის",
+  "create-acc": "შექმენით ანგარიში ბლოგის დასაწყებად",
+  "name": "სახელი",
+  "email": "ელფოსტა",
+  "password": "პაროლი",
+  "confirm-password": "დაადასტურეთ პაროლი",
+  "forgot-password": "დაგავიწყდა პაროლი?",
+  "login": " ავტორიზაცია",
+  "sign-up-w-google": "რეგისტრაცია Google-ით",
+  "login-w-google": "შესვლა Google-ით",
+  "dont-have-acc": "არ გაქვს ანგარიში?",
+  "already-have-acc": "უკვე გაქვს ანგარიში?",
+  "sign-up": " რეგისტრაცია"
+}

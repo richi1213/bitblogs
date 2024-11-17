@@ -1,0 +1,17 @@
+{
+  "login-to-bb": "Login to BitBlogs",
+  "sign-up-for-bb": "Sign up for BitBlogs",
+  "enter-your-info": "Enter your email below to login to your account",
+  "create-acc": "Create your account to start blogging",
+  "name": "Name",
+  "email": "Email",
+  "password": "Password",
+  "confirm-password": "Confirm your password",
+  "forgot-password": "Forgot your password?",
+  "login": " Login",
+  "sign-up-w-google": "Sign up with Google",
+  "login-w-google": "Login with Google",
+  "dont-have-acc": "Dont't have an account?",
+  "already-have-acc": "Already have an account?",
+  "sign-up": " Sign up"
+}
