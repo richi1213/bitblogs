@@ -1,48 +1,49 @@
 import { Link } from 'react-router-dom';
-import { Globe } from 'lucide-react';
-import { ModeToggle } from '@/components/layout/components/navbar/components/mode-toggle';
-import SignInButton from '@/components/layout/components/navbar/components/sign-in-button';
-import SearchButton from '@/components/layout/components/navbar/components/search';
+import {
+  SearchButton,
+  SignInButton,
+  LanguagePicker,
+  ModeToggle,
+} from './components';
+import { useTranslation } from 'react-i18next';
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation('navbar');
+
   return (
     <nav className='flex items-center justify-between border-b bg-background p-4 text-foreground'>
-      <div className='flex cursor-pointer items-center'>
-        <span className='text-xl font-bold'>BitBlogs</span>
-      </div>
-
-      <div className='hidden space-x-4 md:flex'>
-        <Link to='/' className='text-muted-foreground hover:text-foreground'>
-          Home
-        </Link>
-        <Link
-          to='/write'
-          className='text-muted-foreground hover:text-foreground'
-        >
-          Write
-        </Link>
-        <Link
-          to='/about'
-          className='text-muted-foreground hover:text-foreground'
-        >
-          About
-        </Link>
-      </div>
-
-      <div className='flex items-center space-x-4'>
-        <SearchButton />
-
-        <SignInButton>Sign in</SignInButton>
-
-        <div className='relative'>
-          <button className='text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white'>
-            <Globe className='size-5' />
-            <span className='sr-only'>Change language</span>
-          </button>
-          {/* Language dropdown would go here */}
+      <div className='container mx-auto flex items-center justify-between'>
+        <div className='flex cursor-pointer items-center'>
+          <span className='text-2xl font-bold'>BitBlogs</span>
         </div>
 
-        <ModeToggle />
+        <div className='hidden space-x-4 md:flex'>
+          <Link to='/' className='text-muted-foreground hover:text-foreground'>
+            {t('home')}
+          </Link>
+          <Link
+            to='/write'
+            className='text-muted-foreground hover:text-foreground'
+          >
+            {t('write')}
+          </Link>
+          <Link
+            to='/about'
+            className='text-muted-foreground hover:text-foreground'
+          >
+            {t('about')}
+          </Link>
+        </div>
+
+        <div className='flex items-center space-x-4'>
+          <SearchButton />
+
+          <SignInButton>{t('sign-in')}</SignInButton>
+
+          <LanguagePicker />
+
+          <ModeToggle />
+        </div>
       </div>
     </nav>
   );

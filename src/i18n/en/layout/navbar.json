@@ -1,0 +1,20 @@
+{
+  "home": "Home",
+  "write": "Write",
+  "about": "About",
+  "sign-in": "Sign in",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+
+  "type-to-s": "Type to search...",
+  "tags": "Tags",
+  "ai": "AI",
+  "ds": "Data Science",
+  "js": "Javascript",
+  "ml": "Machine Learning",
+  "node": "Node.js",
+  "py": "Python",
+  "react": "React",
+  "ts": "TypeScript"
+}

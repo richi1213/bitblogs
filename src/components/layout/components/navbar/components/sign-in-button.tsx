@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 
-const SignInButton: React.FC<PropsWithChildren> = ({ children }) => {
+export const SignInButton: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Button
       asChild
@@ -12,5 +12,3 @@ const SignInButton: React.FC<PropsWithChildren> = ({ children }) => {
     </Button>
   );
 };
-
-export default SignInButton;

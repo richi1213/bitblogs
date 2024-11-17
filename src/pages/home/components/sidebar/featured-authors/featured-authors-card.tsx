@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 type Author = {
   name: string;
@@ -31,11 +32,13 @@ const FeaturedAuthorsCard: React.FC<FeaturedAuthorsProps> = ({
     },
   ],
 }) => {
+  const { t } = useTranslation('home-page');
+
   return (
     <Card className='w-full max-w-md bg-background shadow-sm'>
       <CardHeader className='pb-3'>
         <CardTitle className='text-lg font-semibold'>
-          Featured Authors
+          {t('featured-authors')}
         </CardTitle>
       </CardHeader>
       <CardContent className='grid gap-4'>

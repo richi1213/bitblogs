@@ -1,0 +1,20 @@
+{
+  "home": "მთავარი",
+  "write": "შექმნა",
+  "about": "შესახებ",
+  "sign-in": "ავტორიზაცია",
+  "light": "ნათელი",
+  "dark": "ბნელი",
+  "system": "სიტემური",
+
+  "type-to-s": "ჩაწერე მოსაძებნად...",
+  "tags": "ტეგები",
+  "ai": "AI",
+  "ds": "Data Science",
+  "js": "Javascript",
+  "ml": "Machine Learning",
+  "node": "Node.js",
+  "py": "Python",
+  "react": "React",
+  "ts": "TypeScript"
+}

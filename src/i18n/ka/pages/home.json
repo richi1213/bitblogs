@@ -1,0 +1,14 @@
+{
+  "blog-title": "ბლოგის დასახელება",
+  "author-name": "სახელი",
+  "publication-date": "თარიღი",
+  "read-time": "დრო",
+  "text": "ტექსტი...",
+  "tag1": "ტეგი1",
+  "tag2": "ტეგი2",
+  "tag3": "ტეგი3",
+
+  "popular-tags": "პოპულარული ტეგები",
+
+  "featured-authors": "გამორჩეული ავტორები"
+}
