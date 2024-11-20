@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 type Author = {
   name: string;
@@ -53,10 +54,14 @@ const FeaturedAuthorsCard: React.FC<FeaturedAuthorsProps> = ({
                   .join('')}
               </AvatarFallback>
             </Avatar>
-            <div className='flex flex-col'>
-              <span className='font-medium'>{author.name}</span>
-              <span className={author.roleColor}>{author.role}</span>
-            </div>
+            <Link to='/author'>
+              <div className='flex flex-col'>
+                <span className='font-medium hover:underline'>
+                  {author.name}
+                </span>
+                <span className={author.roleColor}>{author.role}</span>
+              </div>
+            </Link>
           </div>
         ))}
       </CardContent>

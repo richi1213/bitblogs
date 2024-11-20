@@ -13,5 +13,6 @@
   "login-w-google": "Login with Google",
   "dont-have-acc": "Dont't have an account?",
   "already-have-acc": "Already have an account?",
-  "sign-up": " Sign up"
+  "sign-up": " Sign up",
+  "login-error": "Login error"
 }

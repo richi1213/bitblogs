@@ -32,21 +32,23 @@ const BlogCard: React.FC<BlogCardProps> = ({
 }) => {
   return (
     <Link to={href}>
-      <Card className='overflow-hidden px-4 py-8 transition-all hover:shadow-lg'>
-        <div className='relative aspect-[2/1]'>
+      <Card className='overflow-hidden p-4 transition-all hover:shadow-lg'>
+        <div className='relative'>
           <img
             src={imageUrl}
             alt={title}
-            className='h-full w-full rounded-lg object-cover'
+            className='h-[200px] w-full rounded-lg object-cover'
           />
         </div>
         <CardHeader>
           <div className='space-y-1'>
-            <h2 className='text-2xl font-bold tracking-tight'>{title}</h2>
+            <h2 className='text-2xl font-bold tracking-tight hover:text-primary'>
+              {title}
+            </h2>
             <div className='flex items-center gap-4 text-sm text-muted-foreground'>
               <div className='flex items-center gap-1'>
                 <User className='size-4' />
-                <span>{author}</span>
+                <span className='hover:underline'>{author}</span>
               </div>
               <span>•</span>
               <span>{date}</span>

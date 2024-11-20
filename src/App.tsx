@@ -1,5 +1,5 @@
 import { Layout } from '@/components/layout';
-import { Home, Write, About, Login, Register, NotFound } from '@/pages';
+import { Home, Write, About, Login, Register, NotFound, Author } from '@/pages';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -17,6 +17,7 @@ const router = createBrowserRouter(
         <Route path='/about' element={<About />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/author' element={<Author />} />
       </Route>
 
       <Route path='*' element={<NotFound />} />

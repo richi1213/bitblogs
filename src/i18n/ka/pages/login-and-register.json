@@ -13,5 +13,6 @@
   "login-w-google": "შესვლა Google-ით",
   "dont-have-acc": "არ გაქვს ანგარიში?",
   "already-have-acc": "უკვე გაქვს ანგარიში?",
-  "sign-up": " რეგისტრაცია"
+  "sign-up": " რეგისტრაცია",
+  "login-error": "ავტორიზაციის შეცდომა"
 }
