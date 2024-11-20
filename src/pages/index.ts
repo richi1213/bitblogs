@@ -4,4 +4,5 @@ export { default as Write } from './write/views';
 export { default as Login } from './login/views';
 export { default as Register } from './register/views';
 export { default as Author } from './author/views';
+export { default as Dashboard } from './dashboard/views';
 export { default as NotFound } from './errors/not-found/not-found';

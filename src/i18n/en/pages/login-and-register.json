@@ -14,5 +14,6 @@
   "dont-have-acc": "Dont't have an account?",
   "already-have-acc": "Already have an account?",
   "sign-up": " Sign up",
-  "login-error": "Login error"
+  "login-error": "Login error",
+  "unknown-error": "Unknown error"
 }

@@ -28,8 +28,6 @@ export const register = async ({
     };
   }
 
-  console.log(data);
-
   return {
     data: {
       user: data.user,

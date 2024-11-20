@@ -23,7 +23,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useMutation } from '@tanstack/react-query';
 import Loading from '@/components/ui/loading';
-import { AlertDestructive } from '@/pages/login/components/alert-destructive';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -37,6 +37,8 @@ const formSchema = z.object({
 export function LoginForm() {
   const { t } = useTranslation('login-and-register-page');
 
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,28 +47,26 @@ export function LoginForm() {
     },
   });
 
-  const {
-    mutate: loginAuthor,
-    status,
-    error,
-  } = useMutation({
+  const { mutate: loginAuthor, status } = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
-      console.log('Login successful:', data);
-    },
     onError: (err) => {
       console.error('Login error:', err);
+      console.log(err);
+
+      // const errorMessage =
+      //   err.response?.data?.msg || 'Invalid email or password.';
+
+      // toast({
+      //   variant: 'destructive',
+      //   title: 'Login Failed',
+      //   description: errorMessage,
+      // });
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     loginAuthor({ email: values.email, password: values.password });
   };
-
-  const errorMessage =
-    error instanceof Error
-      ? error.message
-      : (error as any)?.error_description || t('unknown-error');
 
   return (
     <Card className='mx-auto w-full max-w-md text-card-foreground'>
@@ -120,16 +120,10 @@ export function LoginForm() {
               className='w-full bg-primary/85 text-foreground hover:bg-primary/90'
               disabled={status === 'pending'}
             >
-              {status === 'pending' ? <Loading /> : t('sign-up')}
+              {status === 'pending' ? <Loading /> : t('login')}
             </Button>
           </form>
         </Form>
-
-        {status === 'error' && (
-          <div className='mt-4'>
-            <AlertDestructive message={errorMessage} />
-          </div>
-        )}
 
         <div className='mt-4 text-center text-sm'>
           {t('dont-have-acc')}{' '}
