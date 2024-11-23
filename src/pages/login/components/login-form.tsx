@@ -23,7 +23,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useMutation } from '@tanstack/react-query';
 import Loading from '@/components/ui/loading';
-// import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -36,8 +36,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const { t } = useTranslation('login-and-register-page');
-
-  // const { toast } = useToast();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,17 +49,11 @@ export function LoginForm() {
   const { mutate: loginAuthor, status } = useMutation({
     mutationFn: login,
     onError: (err) => {
-      console.error('Login error:', err);
-      console.log(err);
-
-      // const errorMessage =
-      //   err.response?.data?.msg || 'Invalid email or password.';
-
-      // toast({
-      //   variant: 'destructive',
-      //   title: 'Login Failed',
-      //   description: errorMessage,
-      // });
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: err.message,
+      });
     },
   });
 

@@ -5,7 +5,6 @@ import { register } from '@/supabase/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -27,8 +26,14 @@ import Loading from '@/components/ui/loading';
 
 const formSchema = z
   .object({
-    name: z.string().min(2, {
-      message: 'Name must be at least 2 characters.',
+    'full-name-en': z.string().min(2, {
+      message: 'Full name (English) must be at least 2 characters.',
+    }),
+    'full-name-ka': z.string().min(2, {
+      message: 'Full name (Georgian) must be at least 2 characters.',
+    }),
+    username: z.string().min(2, {
+      message: 'Username must be at least 2 characters.',
     }),
     email: z.string().email({
       message: 'Please enter a valid email address.',
@@ -49,7 +54,9 @@ export function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      'full-name-en': '',
+      'full-name-ka': '',
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -71,7 +78,13 @@ export function RegisterForm() {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    registerAuthor({ email: values.email, password: values.password });
+    registerAuthor({
+      email: values.email,
+      password: values.password,
+      username: values.username,
+      full_name_en: values['full-name-en'],
+      full_name_ka: values['full-name-ka'],
+    });
   };
 
   return (
@@ -85,12 +98,38 @@ export function RegisterForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-4'>
             <FormField
               control={form.control}
-              name='name'
+              name='full-name-en'
               render={({ field }) => (
                 <FormItem className='grid gap-2'>
-                  <FormLabel>{t('name')}</FormLabel>
+                  <FormLabel>{t('full-name-en')}</FormLabel>
                   <FormControl>
                     <Input placeholder='John Doe' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='full-name-ka'
+              render={({ field }) => (
+                <FormItem className='grid gap-2'>
+                  <FormLabel>{t('full-name-ka')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder='ჯონ დო' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='username'
+              render={({ field }) => (
+                <FormItem className='grid gap-2'>
+                  <FormLabel>{t('username')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder='JohnDoe123' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

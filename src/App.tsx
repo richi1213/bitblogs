@@ -5,7 +5,7 @@ import {
   About,
   Login,
   Register,
-  Dashboard,
+  Profile,
   NotFound,
   Author,
 } from '@/pages';
@@ -27,7 +27,7 @@ const router = createBrowserRouter(
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/author' element={<Author />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/profile' element={<Profile />} />
       </Route>
 
       <Route path='*' element={<NotFound />} />

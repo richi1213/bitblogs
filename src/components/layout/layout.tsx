@@ -4,6 +4,7 @@ import { Navbar } from './components/navbar';
 import { Main } from './components/main';
 import { Footer } from './components/footer';
 import { PageContainer } from './components/page-container';
+import { Toaster } from '@/components/ui/toaster';
 
 const Layout: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const Layout: React.FC = () => {
           <Outlet />
         </PageContainer>
       </Main>
+      <Toaster />
       <Footer />
     </div>
   );
