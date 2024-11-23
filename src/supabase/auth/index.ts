@@ -20,6 +20,8 @@ type LoginInput = {
   password: string;
 };
 
+type ProfileRow = Database['public']['Tables']['profiles']['Row'];
+
 const supabaseWithSchema: SupabaseClient<Database> = supabase;
 
 export const register = async ({
@@ -81,4 +83,19 @@ export const login = async ({ email, password }: LoginInput) => {
 
     throw new Error('Something went wrong during login. Please try again.');
   }
+};
+
+export const fetchUserProfile = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching user profile:', error.message);
+    return null;
+  }
+
+  return data as ProfileRow;
 };
