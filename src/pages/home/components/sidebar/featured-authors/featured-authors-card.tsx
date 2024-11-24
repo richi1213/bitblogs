@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { getInitials } from '@/utils/string-utils';
 
 type Author = {
   name: string;
@@ -48,10 +49,7 @@ const FeaturedAuthorsCard: React.FC<FeaturedAuthorsProps> = ({
             <Avatar className='h-10 w-10'>
               <AvatarImage src={author.avatar} alt={author.name} />
               <AvatarFallback className='bg-muted'>
-                {author.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')}
+                {getInitials(author.name)}
               </AvatarFallback>
             </Avatar>
             <Link to='/author'>

@@ -8,6 +8,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
+import UserMenu from '@/pages/profile/components/user-menu';
 
 const Navbar: React.FC = () => {
   const user = useAtomValue(userAtom);
@@ -43,15 +44,10 @@ const Navbar: React.FC = () => {
           <LanguagePicker />
           <ModeToggle />
           {user.isLoggedIn ? (
-            <div className='relative'>
-              <button className='rounded-full'>
-                <img
-                  src='https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=400&width=400'
-                  alt='User Avatar'
-                  className='h-8 w-8 rounded-full'
-                />
-              </button>
-            </div>
+            <UserMenu
+              avatarUrl={user.userInfo?.avatar_url}
+              name={user.userInfo?.full_name_en as string}
+            />
           ) : (
             <SignInButton>{t('sign-in')}</SignInButton>
           )}
