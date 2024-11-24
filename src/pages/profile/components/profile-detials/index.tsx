@@ -6,20 +6,28 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Facebook, Github, Linkedin, Twitter, Users } from 'lucide-react';
+import { useAtomValue } from 'jotai';
+import { userAtom } from '@/atoms/auth';
+import ProfileAvatar from '@/pages/profile/components/ui/profile-avatar';
 
-const AuthorDetails = () => {
+const ProfileDetails: React.FC = () => {
+  const user = useAtomValue(userAtom);
   return (
     <div>
       <Card className='mb-12 flex flex-col items-center p-8 text-muted-foreground shadow-lg md:flex-row md:items-start'>
-        <Avatar className='mb-4 mt-0 h-32 w-32 border-4 border-primary md:mb-0 md:mr-8 md:mt-6'>
-          <AvatarFallback className='text-xl'>JD</AvatarFallback>
-        </Avatar>
+        <ProfileAvatar
+          avatarUrl={null}
+          name={user.userInfo?.full_name_en as string}
+          className='mb-4 mt-0 border-4 border-primary md:mb-0 md:mr-8 md:mt-6'
+          size='extraLarge'
+        />
         <div className='flex flex-grow flex-col items-center md:items-start'>
           <CardHeader>
-            <CardTitle className='mb-2 text-3xl'>Jane Doe</CardTitle>
+            <CardTitle className='mb-2 text-3xl'>
+              {user.userInfo?.full_name_en}
+            </CardTitle>
           </CardHeader>
           <CardContent className='items-center md:items-start'>
             <CardDescription className='mb-4 text-center md:text-left'>
@@ -87,4 +95,4 @@ const AuthorDetails = () => {
   );
 };
 
-export default AuthorDetails;
+export default ProfileDetails;
