@@ -1,5 +1,5 @@
 import { supabase } from '@/supabase';
-import { Database } from '@/supabase/supabase.types';
+import { Database, Tables } from '@/supabase/supabase.types';
 import {
   SupabaseClient,
   AuthResponse,
@@ -20,7 +20,7 @@ type LoginInput = {
   password: string;
 };
 
-type ProfileRow = Database['public']['Tables']['profiles']['Row'];
+export type ProfilesRow = Tables<'profiles'>;
 
 const supabaseWithSchema: SupabaseClient<Database> = supabase;
 
@@ -97,5 +97,5 @@ export const fetchUserProfile = async (userId: string) => {
     return null;
   }
 
-  return data as ProfileRow;
+  return data as ProfilesRow;
 };

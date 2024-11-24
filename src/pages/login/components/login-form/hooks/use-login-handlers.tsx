@@ -6,61 +6,67 @@ import { userAtom } from '@/atoms/auth';
 import { useNavigate } from 'react-router-dom';
 import { TriangleAlert } from 'lucide-react';
 
-const useLoginHandlers = () => {
+type UseLoginHandlers = {
+  handleLoginSuccess: () => Promise<void>;
+  handleLoginError: (err: unknown) => void;
+};
+
+const useLoginHandlers: () => UseLoginHandlers = () => {
   const setUser = useSetAtom(userAtom);
   const navigate = useNavigate();
 
-  const handleLoginSuccess = async () => {
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+  const handleLoginSuccess: UseLoginHandlers['handleLoginSuccess'] =
+    async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-      if (user) {
-        const profile = await fetchUserProfile(user.id);
+        if (user) {
+          const profile = await fetchUserProfile(user.id);
 
-        if (!profile) {
-          toast({
-            variant: 'destructive',
-            title: 'Error',
-            description: 'Could not fetch user profile.',
+          if (!profile) {
+            toast({
+              variant: 'destructive',
+              title: 'Error',
+              description: 'Could not fetch user profile.',
+            });
+            return;
+          }
+
+          setUser({
+            isLoggedIn: true,
+            userInfo: {
+              email: user.email ?? null,
+              username: profile.username || null,
+              avatar_url: profile.avatar_url || null,
+              full_name_en: profile.full_name_en || null,
+              full_name_ka: profile.full_name_ka || null,
+              id: profile.id,
+              updated_at: profile.updated_at || null,
+            },
           });
-          return;
+
+          toast({
+            variant: 'default',
+            title: 'Success!',
+            description: 'You have logged in successfully.',
+            duration: 2000,
+          });
+
+          navigate('/');
         }
-
-        setUser({
-          isLoggedIn: true,
-          userInfo: {
-            email: user.email ?? null,
-            username: profile.username || null,
-            avatar_url: profile.avatar_url || null,
-            full_name_en: profile.full_name_en || null,
-            full_name_ka: profile.full_name_ka || null,
-            id: profile.id,
-            updated_at: profile.updated_at || null,
-          },
-        });
-
+      } catch (err) {
+        console.error('Error handling login:', err);
         toast({
-          variant: 'default',
-          title: 'Success!',
-          description: 'You have logged in successfully.',
-          duration: 2000,
+          variant: 'destructive',
+          title: 'Error',
+          description: 'An error occurred while logging in.',
         });
-
-        navigate('/');
       }
-    } catch (err) {
-      console.error('Error handling login:', err);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'An error occurred while logging in.',
-      });
-    }
-  };
+    };
 
-  const handleLoginError = (err: unknown) => {
+  const handleLoginError: UseLoginHandlers['handleLoginError'] = (err) => {
     const errorMessage =
       (err as { message?: string })?.message || 'An unknown error occurred';
     toast({

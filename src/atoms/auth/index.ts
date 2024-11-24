@@ -1,12 +1,10 @@
-import { atom } from 'jotai';
-import { Database } from '@/supabase/supabase.types';
+import { atomWithStorage } from 'jotai/utils';
+import { ProfilesRow } from '@/supabase/auth';
 
-type ProfileRow = Database['public']['Tables']['profiles']['Row'];
-
-export const userAtom = atom<{
+export const userAtom = atomWithStorage<{
   isLoggedIn: boolean;
-  userInfo: null | ProfileRow;
-}>({
+  userInfo: null | ProfilesRow;
+}>('user-session', {
   isLoggedIn: false,
   userInfo: null,
 });

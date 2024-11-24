@@ -16,6 +16,8 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { ThemeProvider } from '@/components/theme-provider';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/atoms/auth';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +38,8 @@ const router = createBrowserRouter(
 );
 
 const App: React.FC = () => {
+  const [t] = useAtom(userAtom);
+  console.log(t);
   return (
     <ThemeProvider>
       <RouterProvider router={router} />
