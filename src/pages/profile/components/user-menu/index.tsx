@@ -11,7 +11,7 @@ import { User, LogOut } from 'lucide-react';
 import ProfileAvatar from '@/pages/profile/components/ui/profile-avatar';
 import { ProfileAvatarProps } from '@/pages/profile/components/ui/profile-avatar';
 import useLogOut from '@/atoms/auth/hooks/use-log-out';
-import EditUserDialog from '@/pages/profile/components/user-menu/components/edit-user-dialog';
+import EditUserDialog from '@/pages/profile/components/user-menu/components/edit-user-sheet';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import { useNavigate } from 'react-router-dom';
