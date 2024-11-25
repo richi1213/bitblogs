@@ -17,10 +17,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import { generateAvatarUrl } from '@/pages/edit-profile/utils/avatars';
-import { updateUserProfile } from '@/supabase/auth'; // Import your update function
+import { updateUserProfile } from '@/supabase/auth';
+import { useNavigate } from 'react-router-dom';
 
 type FormValues = {
   full_name_en: string;
@@ -30,13 +31,23 @@ type FormValues = {
 
 const EditUserForm: React.FC = () => {
   const user = useAtomValue(userAtom);
-  const userInfo = user?.userInfo; // Safely extract userInfo
+  const setUser = useSetAtom(userAtom);
+  const userInfo = user?.userInfo;
+  const navigate = useNavigate();
 
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
     userInfo?.avatar_url || generateAvatarUrl('default'),
   );
 
-  const avatarSeeds = ['user1', 'user2', 'user3', 'user4', 'user5'];
+  const avatarSeeds = [
+    'user1',
+    'user2',
+    'user3',
+    'user4',
+    'user5',
+    'user6',
+    'user7',
+  ];
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -53,12 +64,28 @@ const EditUserForm: React.FC = () => {
     }
 
     try {
-      const updatedProfile = await updateUserProfile({
+      await updateUserProfile({
         id: userInfo.id,
         full_name_en: values.full_name_en,
         full_name_ka: values.full_name_ka,
         avatar_url: values.avatar,
       });
+
+      setUser((prev) => ({
+        ...prev,
+        userInfo: {
+          ...prev?.userInfo,
+          full_name_en: values.full_name_en,
+          full_name_ka: values.full_name_ka,
+          avatar_url: values.avatar,
+          email: prev?.userInfo?.email || null,
+          id: prev?.userInfo?.id || '',
+          updated_at: prev?.userInfo?.updated_at || null,
+          username: prev?.userInfo?.username || null,
+        },
+      }));
+
+      navigate('/');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -67,13 +94,12 @@ const EditUserForm: React.FC = () => {
   return (
     <div className='mx-auto max-w-[425px]'>
       <h2 className='mb-4 text-lg font-semibold'>Edit Profile</h2>
-      <p className='mb-6 text-sm text-muted'>
+      <p className='mb-6 text-sm'>
         Make changes to your profile here. Click save when you're done.
       </p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-          {/* Full Name (English) */}
           <FormField
             name='full_name_en'
             control={form.control}
@@ -88,7 +114,6 @@ const EditUserForm: React.FC = () => {
             )}
           />
 
-          {/* Full Name (Georgian) */}
           <FormField
             name='full_name_ka'
             control={form.control}
@@ -103,7 +128,6 @@ const EditUserForm: React.FC = () => {
             )}
           />
 
-          {/* Avatar Selection */}
           <FormField
             name='avatar'
             control={form.control}
@@ -173,7 +197,7 @@ const EditUserForm: React.FC = () => {
             )}
           />
 
-          <Button type='submit' className='w-full'>
+          <Button type='submit' className='w-full text-foreground'>
             Save Changes
           </Button>
         </form>
