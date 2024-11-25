@@ -21,6 +21,7 @@ type LoginInput = {
 };
 
 export type ProfilesRow = Tables<'profiles'>;
+type ProfileUpdateData = Database['public']['Tables']['profiles']['Update'];
 
 const supabaseWithSchema: SupabaseClient<Database> = supabase;
 
@@ -98,4 +99,24 @@ export const fetchUserProfile = async (userId: string) => {
   }
 
   return data as ProfilesRow;
+};
+
+export const updateUserProfile = async (updates: ProfileUpdateData) => {
+  const { id, ...profileUpdates } = updates;
+
+  if (!id) {
+    throw new Error('User ID is required to update the profile');
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(profileUpdates)
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error updating user profile:', error.message);
+    return null;
+  }
+
+  return data;
 };

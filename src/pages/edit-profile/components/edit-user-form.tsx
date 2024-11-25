@@ -17,32 +17,51 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
+import { useAtomValue } from 'jotai';
+import { userAtom } from '@/atoms/auth';
+import { generateAvatarUrl } from '@/pages/edit-profile/utils/avatars';
+import { updateUserProfile } from '@/supabase/auth'; // Import your update function
 
 type FormValues = {
   full_name_en: string;
+  full_name_ka: string;
   avatar: string;
 };
 
-const avatars = [
-  'https://api.dicebear.com/9.x/avataaars/svg',
-  'https://api.dicebear.com/9.x/avataaars/svg',
-  'https://api.dicebear.com/9.x/avataaars/svg',
-  'https://api.dicebear.com/9.x/avataaars/svg',
-  'https://api.dicebear.com/9.x/avataaars/svg',
-];
-
 const EditUserForm: React.FC = () => {
-  const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
+  const user = useAtomValue(userAtom);
+  const userInfo = user?.userInfo; // Safely extract userInfo
+
+  const [selectedAvatar, setSelectedAvatar] = useState<string>(
+    userInfo?.avatar_url || generateAvatarUrl('default'),
+  );
+
+  const avatarSeeds = ['user1', 'user2', 'user3', 'user4', 'user5'];
 
   const form = useForm<FormValues>({
     defaultValues: {
-      full_name_en: '',
+      full_name_en: userInfo?.full_name_en || '',
+      full_name_ka: userInfo?.full_name_ka || '',
       avatar: selectedAvatar,
     },
   });
 
-  const onSubmit = (values: FormValues) => {
-    console.log('Form values:', values);
+  const onSubmit = async (values: FormValues) => {
+    if (!userInfo) {
+      console.error('User info is missing.');
+      return;
+    }
+
+    try {
+      const updatedProfile = await updateUserProfile({
+        id: userInfo.id,
+        full_name_en: values.full_name_en,
+        full_name_ka: values.full_name_ka,
+        avatar_url: values.avatar,
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -54,15 +73,30 @@ const EditUserForm: React.FC = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-          {/* Full Name */}
+          {/* Full Name (English) */}
           <FormField
             name='full_name_en'
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Full Name</FormLabel>
+                <FormLabel>Full Name (English)</FormLabel>
                 <FormControl>
                   <Input placeholder='Enter your full name' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Full Name (Georgian) */}
+          <FormField
+            name='full_name_ka'
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name (Georgian)</FormLabel>
+                <FormControl>
+                  <Input placeholder='შეიყვანეთ თქვენი სახელი' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,34 +133,37 @@ const EditUserForm: React.FC = () => {
                         }}
                         className='grid grid-cols-2 gap-4'
                       >
-                        {avatars.map((avatar, index) => (
-                          <div
-                            key={index}
-                            className='flex items-center justify-center'
-                          >
-                            <RadioGroupItem
-                              value={avatar}
-                              id={`avatar-${index}`}
-                              className='hidden'
-                            />
-                            <label
-                              htmlFor={`avatar-${index}`}
-                              className={`flex cursor-pointer items-center justify-center ${
-                                selectedAvatar === avatar
-                                  ? 'rounded-md ring-2 ring-blue-500'
-                                  : ''
-                              }`}
+                        {avatarSeeds.map((seed, index) => {
+                          const avatarUrl = generateAvatarUrl(seed);
+                          return (
+                            <div
+                              key={index}
+                              className='flex items-center justify-center'
                             >
-                              <Avatar>
-                                <AvatarImage
-                                  src={avatar}
-                                  alt={`Avatar ${index + 1}`}
-                                />
-                                <AvatarFallback>?</AvatarFallback>
-                              </Avatar>
-                            </label>
-                          </div>
-                        ))}
+                              <RadioGroupItem
+                                value={avatarUrl}
+                                id={`avatar-${index}`}
+                                className='hidden'
+                              />
+                              <label
+                                htmlFor={`avatar-${index}`}
+                                className={`flex cursor-pointer items-center justify-center ${
+                                  selectedAvatar === avatarUrl
+                                    ? 'rounded-md ring-2 ring-blue-500'
+                                    : ''
+                                }`}
+                              >
+                                <Avatar>
+                                  <AvatarImage
+                                    src={avatarUrl}
+                                    alt={`Avatar ${index + 1}`}
+                                  />
+                                  <AvatarFallback>?</AvatarFallback>
+                                </Avatar>
+                              </label>
+                            </div>
+                          );
+                        })}
                       </RadioGroup>
                     </PopoverContent>
                   </Popover>

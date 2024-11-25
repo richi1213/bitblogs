@@ -12,6 +12,8 @@
     "update-types": "npx supabase gen types --lang=typescript --project-id wfkhgegptmwujovvedra --schema public > src/supabase/supabase.types.ts"
   },
   "dependencies": {
+    "@dicebear/collection": "^9.2.2",
+    "@dicebear/core": "^9.2.2",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
