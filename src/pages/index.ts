@@ -5,4 +5,5 @@ export { default as Login } from './login/views';
 export { default as Register } from './register/views';
 export { default as Author } from './author/views';
 export { default as Profile } from './profile/views';
+export { default as EditProfile } from './edit-profile/views';
 export { default as NotFound } from './errors/not-found/not-found';

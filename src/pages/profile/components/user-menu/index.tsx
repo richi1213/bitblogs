@@ -7,11 +7,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Settings } from 'lucide-react';
 import ProfileAvatar from '@/pages/profile/components/ui/profile-avatar';
 import { ProfileAvatarProps } from '@/pages/profile/components/ui/profile-avatar';
 import useLogOut from '@/atoms/auth/hooks/use-log-out';
-import EditUserDialog from '@/pages/profile/components/user-menu/components/edit-user-sheet';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import { useNavigate } from 'react-router-dom';
@@ -29,6 +28,14 @@ const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
     }
   };
 
+  const handleProfileEditClick = () => {
+    if (user?.userInfo?.username) {
+      navigate('/profile/edit');
+    } else {
+      console.error('Edit is not available');
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -38,8 +45,9 @@ const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' forceMount>
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <EditUserDialog />
+          <DropdownMenuItem onClick={handleProfileEditClick}>
+            <Settings className='mr-2 h-4 w-4' />
+            <span>User settings</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleProfileClick}>
             <User className='mr-2 h-4 w-4' />

@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 
 const ProtectedRoute: React.FC = () => {
-  const [user] = useAtom(userAtom);
+  const user = useAtomValue(userAtom);
 
   if (!user.isLoggedIn) {
     return <Navigate to='/login' />;

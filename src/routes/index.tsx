@@ -8,6 +8,7 @@ import {
   Profile,
   NotFound,
   Author,
+  EditProfile,
 } from '@/pages';
 import ProtectedRoute from '@/routes/protected';
 import {
@@ -26,9 +27,9 @@ export const router = createBrowserRouter(
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/author' element={<Author />} />
-
         <Route element={<ProtectedRoute />}>
           <Route path='/profile/:username' element={<Profile />} />
+          <Route path='/profile/edit' element={<EditProfile />} />
         </Route>
       </Route>
 
