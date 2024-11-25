@@ -18,7 +18,7 @@ const ProfileDetails: React.FC = () => {
     <div>
       <Card className='mb-12 flex flex-col items-center p-8 text-muted-foreground shadow-lg md:flex-row md:items-start'>
         <ProfileAvatar
-          avatarUrl={null}
+          avatarUrl={user.userInfo?.avatar_url}
           name={user.userInfo?.full_name_en as string}
           className='mb-4 mt-0 border-4 border-primary md:mb-0 md:mr-8 md:mt-6'
           size='extraLarge'
