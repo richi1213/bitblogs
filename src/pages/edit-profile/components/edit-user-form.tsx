@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import { generateAvatarUrl } from '@/pages/edit-profile/utils/avatars';
 import { updateUserProfile } from '@/supabase/auth';
@@ -30,8 +30,7 @@ type FormValues = {
 };
 
 const EditUserForm: React.FC = () => {
-  const user = useAtomValue(userAtom);
-  const setUser = useSetAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const userInfo = user?.userInfo;
   const navigate = useNavigate();
 

@@ -10,11 +10,14 @@ const useLogOut: () => { logout: () => Promise<void> } = () => {
 
   const logout = async () => {
     try {
+      setUser((prev) => ({ ...prev, isLoading: true }));
+
       await supabase.auth.signOut();
 
       localStorage.removeItem('user-session');
 
       setUser({
+        isLoading: false,
         isLoggedIn: false,
         userInfo: null,
       });
@@ -27,6 +30,8 @@ const useLogOut: () => { logout: () => Promise<void> } = () => {
       navigate('/');
     } catch (error) {
       console.error('Error during logout:', error);
+
+      setUser((prev) => ({ ...prev, isLoading: false }));
     }
   };
 
