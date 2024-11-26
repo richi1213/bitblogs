@@ -22,44 +22,44 @@ import { userAtom } from '@/atoms/auth';
 import { generateAvatarUrl } from '@/pages/edit-profile/utils/avatars';
 import { updateUserProfile } from '@/supabase/auth';
 import { useNavigate } from 'react-router-dom';
+import { avatarSeeds } from '@/pages/edit-profile/utils/avatars';
+import { z } from 'zod';
 
-type FormValues = {
-  full_name_en: string;
-  full_name_ka: string;
-  avatar: string;
-};
+const formSchema = z.object({
+  'full-name-en': z.string().min(2, {
+    message: 'Full name (English) must be at least 2 characters.',
+  }),
+  'full-name-ka': z.string().min(2, {
+    message: 'Full name (Georgian) must be at least 2 characters.',
+  }),
+  avatar_url: z
+    .string()
+    .url({
+      message: 'Please provide a valid URL for the avatar.',
+    })
+    .optional(),
+});
 
 const EditUserForm: React.FC = () => {
   const [user, setUser] = useAtom(userAtom);
   const userInfo = user?.userInfo;
   const navigate = useNavigate();
 
+  type FormFields = z.infer<typeof formSchema>;
+
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
     userInfo?.avatar_url || generateAvatarUrl('default'),
   );
 
-  const avatarSeeds = [
-    'user1',
-    'user2',
-    'user3',
-    'user4',
-    'user5',
-    'user6',
-    'user7',
-    'msajs',
-    'sadkdjs',
-    'lol',
-  ];
-
-  const form = useForm<FormValues>({
+  const form = useForm<FormFields>({
     defaultValues: {
-      full_name_en: userInfo?.full_name_en || '',
-      full_name_ka: userInfo?.full_name_ka || '',
-      avatar: selectedAvatar,
+      'full-name-en': userInfo?.full_name_en || '',
+      'full-name-ka': userInfo?.full_name_ka || '',
+      avatar_url: selectedAvatar,
     },
   });
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: FormFields) => {
     if (!userInfo) {
       console.error('User info is missing.');
       return;
@@ -68,18 +68,17 @@ const EditUserForm: React.FC = () => {
     try {
       await updateUserProfile({
         id: userInfo.id,
-        full_name_en: values.full_name_en,
-        full_name_ka: values.full_name_ka,
-        avatar_url: values.avatar,
+        full_name_en: values['full-name-en'],
+        full_name_ka: values['full-name-ka'],
+        avatar_url: values.avatar_url,
       });
-
       setUser((prev) => ({
         ...prev,
         userInfo: {
           ...prev?.userInfo,
-          full_name_en: values.full_name_en,
-          full_name_ka: values.full_name_ka,
-          avatar_url: values.avatar,
+          full_name_en: values['full-name-en'],
+          full_name_ka: values['full-name-ka'],
+          avatar_url: values.avatar_url || null,
           email: prev?.userInfo?.email || null,
           id: prev?.userInfo?.id || '',
           updated_at: prev?.userInfo?.updated_at || null,
@@ -103,7 +102,7 @@ const EditUserForm: React.FC = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
           <FormField
-            name='full_name_en'
+            name='full-name-en'
             control={form.control}
             render={({ field }) => (
               <FormItem>
@@ -117,7 +116,7 @@ const EditUserForm: React.FC = () => {
           />
 
           <FormField
-            name='full_name_ka'
+            name='full-name-ka'
             control={form.control}
             render={({ field }) => (
               <FormItem>
@@ -131,7 +130,7 @@ const EditUserForm: React.FC = () => {
           />
 
           <FormField
-            name='avatar'
+            name='avatar_url'
             control={form.control}
             render={({ field }) => (
               <FormItem>

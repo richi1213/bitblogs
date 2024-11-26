@@ -32,9 +32,12 @@ const formSchema = z
     'full-name-ka': z.string().min(2, {
       message: 'Full name (Georgian) must be at least 2 characters.',
     }),
-    username: z.string().min(2, {
-      message: 'Username must be at least 2 characters.',
-    }),
+    username: z
+      .string()
+      .min(2, {
+        message: 'Username must be at least 2 characters.',
+      })
+      .max(30, { message: 'Username max characters should not exceed 30' }),
     email: z.string().email({
       message: 'Please enter a valid email address.',
     }),
@@ -51,7 +54,9 @@ const formSchema = z
 export function RegisterForm() {
   const { t } = useTranslation('login-and-register-page');
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  type FormFields = z.infer<typeof formSchema>;
+
+  const form = useForm<FormFields>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       'full-name-en': '',
@@ -77,7 +82,7 @@ export function RegisterForm() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: FormFields) => {
     registerAuthor({
       email: values.email,
       password: values.password,

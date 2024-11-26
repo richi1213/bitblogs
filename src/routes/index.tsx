@@ -25,8 +25,8 @@ export const router = createBrowserRouter(
         <Route path='/write' element={<Write />} />
         <Route path='/about' element={<About />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
         <Route path='/author' element={<Author />} />
+        <Route path='/register' element={<Register />} />
         <Route element={<ProtectedRoute />}>
           <Route path='/profile/:username' element={<Profile />} />
           <Route path='/profile/edit' element={<EditProfile />} />

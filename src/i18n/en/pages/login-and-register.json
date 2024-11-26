@@ -18,5 +18,8 @@
   "already-have-acc": "Already have an account?",
   "sign-up": " Sign up",
   "login-error": "Login error",
-  "unknown-error": "Unknown error"
+  "unknown-error": "Unknown error",
+  "valid-email": "Please enter a valid email address",
+  "password-required": "Password is required.",
+  "password-min": "Password must be at least 8 characters."
 }

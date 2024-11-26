@@ -25,20 +25,23 @@ import { useMutation } from '@tanstack/react-query';
 import Loading from '@/components/ui/loading';
 import useLoginHandlers from '@/pages/login/components/login-form/hooks/use-login-handlers';
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: 'Please enter a valid email address.',
-  }),
-  password: z.string().min(1, {
-    message: 'Password is required.',
-  }),
-});
-
 export function LoginForm() {
   const { t } = useTranslation('login-and-register-page');
   const { handleLoginSuccess, handleLoginError } = useLoginHandlers();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const formSchema = z.object({
+    email: z.string().email({
+      message: t('valid-email'),
+    }),
+    password: z
+      .string()
+      .min(1, { message: t('password-required') })
+      .min(8, { message: t('password-min') }),
+  });
+
+  type FormFields = z.infer<typeof formSchema>;
+
+  const form = useForm<FormFields>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
@@ -52,7 +55,7 @@ export function LoginForm() {
     onError: handleLoginError,
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: FormFields) => {
     loginAuthor({
       email: values.email,
       password: values.password,
