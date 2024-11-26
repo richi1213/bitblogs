@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { register } from '@/supabase/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -23,36 +23,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Loading from '@/components/ui/loading';
-
-const formSchema = z
-  .object({
-    'full-name-en': z.string().min(2, {
-      message: 'Full name (English) must be at least 2 characters.',
-    }),
-    'full-name-ka': z.string().min(2, {
-      message: 'Full name (Georgian) must be at least 2 characters.',
-    }),
-    username: z
-      .string()
-      .min(2, {
-        message: 'Username must be at least 2 characters.',
-      })
-      .max(30, { message: 'Username max characters should not exceed 30' }),
-    email: z.string().email({
-      message: 'Please enter a valid email address.',
-    }),
-    password: z.string().min(8, {
-      message: 'Password must be at least 8 characters.',
-    }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  });
+import { createRegisterFormSchema } from '@/pages/register/utils/schemas/createRegisterFormSchema';
 
 export function RegisterForm() {
   const { t } = useTranslation('login-and-register-page');
+
+  const formSchema = createRegisterFormSchema(t);
 
   type FormFields = z.infer<typeof formSchema>;
 
@@ -106,7 +82,7 @@ export function RegisterForm() {
               name='full-name-en'
               render={({ field }) => (
                 <FormItem className='grid gap-2'>
-                  <FormLabel>{t('full-name-en')}</FormLabel>
+                  <FormLabel>{t('full-name-en-enter')}</FormLabel>
                   <FormControl>
                     <Input placeholder='John Doe' {...field} />
                   </FormControl>
@@ -119,7 +95,7 @@ export function RegisterForm() {
               name='full-name-ka'
               render={({ field }) => (
                 <FormItem className='grid gap-2'>
-                  <FormLabel>{t('full-name-ka')}</FormLabel>
+                  <FormLabel>{t('full-name-ka-enter')}</FormLabel>
                   <FormControl>
                     <Input placeholder='ჯონ დო' {...field} />
                   </FormControl>

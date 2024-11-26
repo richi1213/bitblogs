@@ -24,34 +24,28 @@ import { updateUserProfile } from '@/supabase/auth';
 import { useNavigate } from 'react-router-dom';
 import { avatarSeeds } from '@/pages/edit-profile/utils/avatars';
 import { z } from 'zod';
-
-const formSchema = z.object({
-  'full-name-en': z.string().min(2, {
-    message: 'Full name (English) must be at least 2 characters.',
-  }),
-  'full-name-ka': z.string().min(2, {
-    message: 'Full name (Georgian) must be at least 2 characters.',
-  }),
-  avatar_url: z
-    .string()
-    .url({
-      message: 'Please provide a valid URL for the avatar.',
-    })
-    .optional(),
-});
+import { createEditFormSchema } from '@/pages/edit-profile/utils/schemas/createEditFormSchema';
+import { useTranslation } from 'react-i18next';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const EditUserForm: React.FC = () => {
   const [user, setUser] = useAtom(userAtom);
-  const userInfo = user?.userInfo;
-  const navigate = useNavigate();
 
-  type FormFields = z.infer<typeof formSchema>;
+  const userInfo = user?.userInfo;
 
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
     userInfo?.avatar_url || generateAvatarUrl('default'),
   );
+  const navigate = useNavigate();
+
+  const { t } = useTranslation('edit-profile-page');
+
+  const formSchema = createEditFormSchema(t);
+
+  type FormFields = z.infer<typeof formSchema>;
 
   const form = useForm<FormFields>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       'full-name-en': userInfo?.full_name_en || '',
       'full-name-ka': userInfo?.full_name_ka || '',

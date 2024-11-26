@@ -24,20 +24,13 @@ import { Input } from '@/components/ui/input';
 import { useMutation } from '@tanstack/react-query';
 import Loading from '@/components/ui/loading';
 import useLoginHandlers from '@/pages/login/components/login-form/hooks/use-login-handlers';
+import { createLoginFormSchema } from '@/pages/login/utils/schemas/createLoginFormSchema';
 
 export function LoginForm() {
   const { t } = useTranslation('login-and-register-page');
   const { handleLoginSuccess, handleLoginError } = useLoginHandlers();
 
-  const formSchema = z.object({
-    email: z.string().email({
-      message: t('valid-email'),
-    }),
-    password: z
-      .string()
-      .min(1, { message: t('password-required') })
-      .min(8, { message: t('password-min') }),
-  });
+  const formSchema = createLoginFormSchema(t);
 
   type FormFields = z.infer<typeof formSchema>;
 

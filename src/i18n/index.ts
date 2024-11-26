@@ -7,6 +7,7 @@ import homePageEn from '@/i18n/en/pages/home.json';
 import writePageEn from '@/i18n/en/pages/write.json';
 import aboutPageEn from '@/i18n/en/pages/about.json';
 import loginAndRegisterPageEn from '@/i18n/en/pages/login-and-register.json';
+import editProfilePageEn from '@/i18n/en/pages/edit-profile.json';
 
 import navbarKa from '@/i18n/ka/layout/navbar.json';
 import footerKa from '@/i18n/ka/layout/footer.json';
@@ -14,6 +15,7 @@ import homePageKa from '@/i18n/ka/pages/home.json';
 import writePageKa from '@/i18n/ka/pages/write.json';
 import aboutPageKa from '@/i18n/ka/pages/about.json';
 import loginAndRegisterPageKa from '@/i18n/ka/pages/login-and-register.json';
+import editProfilePageKa from '@/i18n/ka/pages/edit-profile.json';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -24,6 +26,7 @@ i18n.use(initReactI18next).init({
       'write-page': writePageEn,
       'about-page': aboutPageEn,
       'login-and-register-page': loginAndRegisterPageEn,
+      'edit-profile-page': editProfilePageEn,
     },
     ka: {
       navbar: navbarKa,
@@ -32,6 +35,7 @@ i18n.use(initReactI18next).init({
       'write-page': writePageKa,
       'about-page': aboutPageKa,
       'login-and-register-page': loginAndRegisterPageKa,
+      'edit-profile-page': editProfilePageKa,
     },
   },
   lng: 'en',
@@ -44,6 +48,7 @@ i18n.use(initReactI18next).init({
     'write-page',
     'about-page',
     'login-and-register-page',
+    'edit-profile-page',
   ],
 });
 
