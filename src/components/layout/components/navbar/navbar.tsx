@@ -43,10 +43,10 @@ const Navbar: React.FC = () => {
           <SearchButton />
           <LanguagePicker />
           <ModeToggle />
-          {user.isLoggedIn ? (
+          {user ? (
             <UserMenu
-              avatarUrl={user.userInfo?.avatar_url}
-              name={user.userInfo?.full_name_en as string}
+              avatarUrl={user.user.user_metadata?.avatar_url}
+              name={user.user.user_metadata?.full_name_en}
             />
           ) : (
             <SignInButton>{t('sign-in')}</SignInButton>

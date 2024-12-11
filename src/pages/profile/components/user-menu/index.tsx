@@ -10,29 +10,38 @@ import {
 import { User, LogOut, Settings } from 'lucide-react';
 import ProfileAvatar from '@/pages/profile/components/ui/profile-avatar';
 import { ProfileAvatarProps } from '@/pages/profile/components/ui/profile-avatar';
-import useLogOut from '@/atoms/auth/hooks/use-log-out';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import { useNavigate } from 'react-router-dom';
+import { useLogOut } from '@/supabase/auth/hooks/use-log-out';
 
 const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
   const user = useAtomValue(userAtom);
-  const { logout } = useLogOut();
+  const { logOut } = useLogOut();
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
-    if (user?.userInfo?.username) {
-      navigate(`/profile/${user.userInfo.username}`);
+    if (user?.user.user_metadata?.username) {
+      navigate(`/profile/${user?.user.user_metadata?.username}`);
     } else {
       console.error('Username is not available');
     }
   };
 
   const handleProfileEditClick = () => {
-    if (user?.userInfo?.username) {
+    if (user?.user.user_metadata?.username) {
       navigate('/profile/edit');
     } else {
       console.error('Edit is not available');
+    }
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      await logOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error logging out:', error);
     }
   };
 
@@ -55,7 +64,7 @@ const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='text-red-600' onClick={logout}>
+        <DropdownMenuItem className='text-red-600' onClick={handleLogoutClick}>
           <LogOut className='mr-2 h-4 w-4' />
           <span>Sign out</span>
         </DropdownMenuItem>
