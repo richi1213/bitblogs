@@ -11,6 +11,7 @@ const BlogCardsWrapper: React.FC = () => {
   } = useQuery({
     queryKey: ['blogs'],
     queryFn: () => fetchBlogs(),
+    staleTime: 10 * 60 * 1000,
   });
 
   console.log(blogs);

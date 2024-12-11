@@ -10,15 +10,20 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 import { createBlogFormSchema } from '@/pages/write/utils/schemas/createBlogFormSchema';
 import { insertBlog, uploadImage } from '@/supabase/api/blogs';
+import { BlogsInsertPayload } from '@/supabase/api/blogs/index.types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const BlogForm: React.FC = () => {
   const user = useAtomValue(userAtom);
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const formSchema = createBlogFormSchema();
 
@@ -36,14 +41,39 @@ const BlogForm: React.FC = () => {
     },
   });
 
-  const onSubmit = async (formValues: FormFields) => {
-    try {
-      const imageUrl = await uploadImage(formValues?.imageFile);
-      await insertBlog(formValues, imageUrl, user.userInfo?.id as string);
-      console.log('Successfully created blog');
-    } catch (error) {
-      console.error('Error creating blog:', error);
-    }
+  const { mutate } = useMutation({
+    mutationFn: async (formValues: FormFields) => {
+      const imageUrl = await uploadImage(formValues.imageFile);
+      const insertBlogPayload: BlogsInsertPayload = {
+        title_en: formValues.titleEn,
+        title_ka: formValues.titleKa,
+        description_en: formValues.descriptionEn,
+        description_ka: formValues.descriptionKa,
+        image_url: imageUrl || '',
+        user_id: user.userInfo?.id || '',
+      };
+      return await insertBlog(insertBlogPayload);
+    },
+    onSuccess: () => {
+      toast({
+        variant: 'default',
+        description: 'You have successfully posted your blog!',
+      });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      form.reset();
+    },
+    onError: (error) => {
+      console.error(error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to create blog.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const onSubmit = (formValues: FormFields) => {
+    mutate(formValues);
   };
 
   return (
