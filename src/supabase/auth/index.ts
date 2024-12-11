@@ -25,6 +25,22 @@ type ProfileUpdateData = Database['public']['Tables']['profiles']['Update'];
 
 const supabaseWithSchema: SupabaseClient<Database> = supabase;
 
+export const getMe = async () => {
+  try {
+    const { data: user, error } = await supabase.auth.getUser();
+
+    if (error) {
+      console.error('Error fetching user:', error.message);
+      return null;
+    }
+
+    return user;
+  } catch (err) {
+    console.error('Unexpected error in getMe:', err);
+    return null;
+  }
+};
+
 export const register = async ({
   email,
   password,
