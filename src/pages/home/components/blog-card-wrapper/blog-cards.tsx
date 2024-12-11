@@ -13,18 +13,20 @@ const BlogCardsWrapper: React.FC = () => {
     queryFn: () => fetchBlogs(),
   });
 
+  console.log(blogs);
+
   if (isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (isError || !blogs) {
     return <div>Error fetching blogs</div>;
   }
 
   return (
     <section className='flex flex-col space-y-8 md:w-2/3'>
-      {blogs?.map((blog) => (
-        <BlogCard key={blog.id} blog={blog} author='Unknown Author' />
+      {blogs.map((blog) => (
+        <BlogCard key={blog.id} blog={blog} />
       ))}
     </section>
   );

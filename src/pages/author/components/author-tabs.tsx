@@ -6,11 +6,9 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import BlogCard from '@/pages/home/components/blog-card-wrapper/blog-card/blog-card';
 import { useTranslation } from 'react-i18next';
 
 const AuthorTabs: React.FC = () => {
-  const { t: blogT } = useTranslation('home-page');
   const { t: skillsT } = useTranslation('navbar');
 
   const skills = [
@@ -32,7 +30,7 @@ const AuthorTabs: React.FC = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value='articles' className='flex flex-col gap-6'>
-          <BlogCard
+          {/* <BlogCard
             title={blogT('blog-title')}
             author={blogT('author-name')}
             date={blogT('publication-date')}
@@ -41,27 +39,7 @@ const AuthorTabs: React.FC = () => {
             tags={[blogT('tag1'), blogT('tag2'), blogT('tag3')]}
             imageUrl='https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=200&width=400'
             href='/blog/post-slug'
-          />
-          <BlogCard
-            title={blogT('blog-title')}
-            author={blogT('author-name')}
-            date={blogT('publication-date')}
-            readTime={blogT('read-time')}
-            excerpt={blogT('text')}
-            tags={[blogT('tag1'), blogT('tag2'), blogT('tag3')]}
-            imageUrl='https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=200&width=400'
-            href='/blog/post-slug'
-          />
-          <BlogCard
-            title={blogT('blog-title')}
-            author={blogT('author-name')}
-            date={blogT('publication-date')}
-            readTime={blogT('read-time')}
-            excerpt={blogT('text')}
-            tags={[blogT('tag1'), blogT('tag2'), blogT('tag3')]}
-            imageUrl='https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=200&width=400'
-            href='/blog/post-slug'
-          />
+          /> */}
         </TabsContent>
         <TabsContent value='about'>
           <Card className='rounded-xl border bg-card text-card-foreground shadow'>

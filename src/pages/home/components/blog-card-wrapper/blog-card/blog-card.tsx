@@ -7,12 +7,9 @@ type Blog = Tables<'blogs'>;
 
 type BlogCardProps = {
   blog: Blog;
-  tags?: string[];
-  author: string;
-  read_time?: number;
 };
 
-const BlogCard: React.FC<BlogCardProps> = ({ blog, author }) => {
+const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
   const { title_en, created_at, image_url, description_en } = blog;
 
   const blogImageUrl = image_url
@@ -38,12 +35,12 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, author }) => {
           <div className='flex items-center gap-4 text-sm text-muted-foreground'>
             <div className='flex items-center gap-1'>
               <User className='size-4' />
-              <span className='hover:underline'>{author || 'TEMP AUTHOR'}</span>
+              <span className='hover:underline'>TEMP AUTHOR</span>
             </div>
             <Dot />
             <span>{date}</span>
-            <Dot />
-            {/* <div className='flex items-center gap-1'>
+            {/* <Dot />
+            <div className='flex items-center gap-1'>
               <Clock className='size-4' />
               <span>{read_time || '5 min read'}</span>
             </div> */}
