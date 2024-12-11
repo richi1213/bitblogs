@@ -48,7 +48,10 @@ const BlogForm: React.FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='w-full space-y-4 sm:w-4/5'
+      >
         <FormField
           control={form.control}
           name='titleEn'
@@ -91,6 +94,7 @@ const BlogForm: React.FC = () => {
                 <Textarea
                   {...field}
                   onBlur={() => form.trigger('descriptionEn')}
+                  className='h-28'
                 />
               </FormControl>
               <FormMessage />
@@ -110,6 +114,7 @@ const BlogForm: React.FC = () => {
                 <Textarea
                   {...field}
                   onBlur={() => form.trigger('descriptionKa')}
+                  className='h-28'
                 />
               </FormControl>
               <FormMessage />
