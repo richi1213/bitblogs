@@ -1,3 +1,4 @@
+import { userAtom } from '@/atoms/auth';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -10,11 +11,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { createBlogFormSchema } from '@/pages/write/utils/schemas/createBlogFormSchema';
+import { insertBlog, uploadImage } from '@/supabase/api/blogs';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const BlogForm: React.FC = () => {
+  const user = useAtomValue(userAtom);
+
   const formSchema = createBlogFormSchema();
 
   type FormFields = z.infer<typeof formSchema>;
@@ -31,8 +36,14 @@ const BlogForm: React.FC = () => {
     },
   });
 
-  const onSubmit = (formValues: FormFields) => {
-    console.log(formValues);
+  const onSubmit = async (formValues: FormFields) => {
+    try {
+      const imageUrl = await uploadImage(formValues?.imageFile);
+      await insertBlog(formValues, imageUrl, user.userInfo?.id as string);
+      console.log('Successfully created blog');
+    } catch (error) {
+      console.error('Error creating blog:', error);
+    }
   };
 
   return (

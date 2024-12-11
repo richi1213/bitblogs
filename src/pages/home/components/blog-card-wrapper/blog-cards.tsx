@@ -1,31 +1,29 @@
+import Loading from '@/components/ui/loading';
 import BlogCard from '@/pages/home/components/blog-card-wrapper/blog-card/blog-card';
-import { useTranslation } from 'react-i18next';
+import { fetchBlogs } from '@/supabase/api/blogs';
+import { useQuery } from '@tanstack/react-query';
 
 const BlogCardsWrapper: React.FC = () => {
-  const { t } = useTranslation('home-page');
+  const {
+    data: blogs,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: () => fetchBlogs(),
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <div>Error fetching blogs</div>;
+  }
 
   return (
     <section className='flex flex-col space-y-8 md:w-2/3'>
-      <BlogCard
-        title={t('blog-title')}
-        author={t('author-name')}
-        date={t('publication-date')}
-        readTime={t('read-time')}
-        excerpt={t('text')}
-        tags={[t('tag1'), t('tag2'), t('tag3')]}
-        imageUrl='https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=200&width=400'
-        href='/blog/post-slug'
-      />
-      <BlogCard
-        title={t('blog-title')}
-        author={t('author-name')}
-        date={t('publication-date')}
-        readTime={t('read-time')}
-        excerpt={t('text')}
-        tags={[t('tag1'), t('tag2'), t('tag3')]}
-        imageUrl='https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=200&width=400'
-        href='/blog/post-slug'
-      />
+      {blogs?.map((blog) => <BlogCard key={blog.id} blog={blog} />)}
     </section>
   );
 };
