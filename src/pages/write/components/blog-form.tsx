@@ -1,9 +1,17 @@
 import { Button } from '@/components/ui/button';
-
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { createBlogFormSchema } from '@/pages/write/utils/schemas/createBlogFormSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const BlogForm: React.FC = () => {
@@ -11,85 +19,119 @@ const BlogForm: React.FC = () => {
 
   type FormFields = z.infer<typeof formSchema>;
 
-  const { handleSubmit, control } = useForm<FormFields>({
+  const form = useForm<FormFields>({
     resolver: zodResolver(formSchema),
+    mode: 'onBlur',
     defaultValues: {
       titleEn: '',
       titleKa: '',
       descriptionEn: '',
       descriptionKa: '',
-      image: undefined,
+      imageFile: undefined,
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = (formValues: FormFields) => {
+    console.log(formValues);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-3'>
-      <Controller
-        control={control}
-        name='titleEn'
-        render={({ field: { onChange, value } }) => (
-          <Input
-            onChange={onChange}
-            value={value}
-            placeholder='Title (English)'
-          />
-        )}
-      />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        <FormField
+          control={form.control}
+          name='titleEn'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='text-foreground'>Title (English)</FormLabel>
+              <FormControl>
+                <Input {...field} onBlur={() => form.trigger('titleEn')} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <Controller
-        control={control}
-        name='titleKa'
-        render={({ field: { onChange, value } }) => (
-          <Input
-            onChange={onChange}
-            value={value}
-            placeholder='Title (Georgian)'
-          />
-        )}
-      />
+        <FormField
+          control={form.control}
+          name='titleKa'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='text-foreground'>
+                Title (Georgian)
+              </FormLabel>
+              <FormControl>
+                <Input {...field} onBlur={() => form.trigger('titleKa')} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <Controller
-        control={control}
-        name='descriptionEn'
-        render={({ field: { onChange, value } }) => (
-          <Input
-            onChange={onChange}
-            value={value}
-            placeholder='Description (English)'
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name='descriptionKa'
-        render={({ field: { onChange, value } }) => (
-          <Input
-            onChange={onChange}
-            value={value}
-            placeholder='Description (Georgian)'
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name='image'
-        render={({ field: { onChange } }) => (
-          <input
-            type='file'
-            accept='image/*'
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              onChange(file);
-            }}
-          />
-        )}
-      />
-      <Button type='submit'>Submit</Button>
-    </form>
+        <FormField
+          control={form.control}
+          name='descriptionEn'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='text-foreground'>
+                Description (English)
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  onBlur={() => form.trigger('descriptionEn')}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='descriptionKa'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='text-foreground'>
+                Description (Georgian)
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  onBlur={() => form.trigger('descriptionKa')}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='imageFile'
+          render={({ field: { onChange, value, ...rest } }) => (
+            <FormItem>
+              <FormLabel className='text-foreground'>Image</FormLabel>
+              <FormControl>
+                <Input
+                  type='file'
+                  accept='image/*'
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    onChange(file);
+                  }}
+                  {...rest}
+                  onBlur={() => form.trigger('imageFile')}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type='submit'>Create Blog</Button>
+      </form>
+    </Form>
   );
 };
 

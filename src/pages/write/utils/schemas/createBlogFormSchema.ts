@@ -14,7 +14,7 @@ export const createBlogFormSchema = () =>
     descriptionKa: z.string().min(2, {
       message: 'Description (Georgian) must be at least 2 characters long.',
     }),
-    image: z
+    imageFile: z
       .custom<File>((value) => value instanceof File, {
         message: 'Please upload a valid image file.',
       })
