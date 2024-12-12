@@ -10,7 +10,7 @@ import {
   Author,
   EditProfile,
 } from '@/pages';
-import ProtectedRoute from '@/routes/protected';
+import IsUnauthorizedGuard from '@/routes/protected';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -27,7 +27,7 @@ export const router = createBrowserRouter(
         <Route path='/login' element={<Login />} />
         <Route path='/author' element={<Author />} />
         <Route path='/register' element={<Register />} />
-        <Route element={<ProtectedRoute />}>
+        <Route element={<IsUnauthorizedGuard />}>
           <Route path='/profile/:username' element={<Profile />} />
           <Route path='/profile/edit' element={<EditProfile />} />
         </Route>
