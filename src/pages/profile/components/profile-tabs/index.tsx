@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BlogProvider } from '@/context/blogs/blog-context';
 import AboutTabContent from '@/pages/profile/components/profile-tabs/about/about-tab-content';
 import ArticlesTabContent from '@/pages/profile/components/profile-tabs/articles/articles-tab-content';
 
@@ -10,11 +11,14 @@ const ProfileTabs: React.FC = () => {
           <TabsTrigger value='articles' className='col-span-6'>
             Articles
           </TabsTrigger>
+
           <TabsTrigger value='about' className='col-span-6'>
             About
           </TabsTrigger>
         </TabsList>
-        <ArticlesTabContent />
+        <BlogProvider>
+          <ArticlesTabContent />
+        </BlogProvider>
         <AboutTabContent />
       </Tabs>
     </div>

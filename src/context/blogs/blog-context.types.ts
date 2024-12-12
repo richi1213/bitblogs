@@ -1,7 +1,7 @@
-import { BlogRow } from '@/supabase/api/blogs/index.types';
+import { Blog } from '@/pages/home/components/blog-card-wrapper/blog-card/blog-card.types';
 
 export type BlogContextType = {
-  blogs: BlogRow[] | null | undefined;
+  blogs: Blog[] | null | undefined;
   isLoading: boolean;
   isError: boolean;
 };
