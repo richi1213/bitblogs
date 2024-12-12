@@ -25,6 +25,8 @@ const BlogForm: React.FC = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
+  const userId = user?.user.id;
+
   const formSchema = createBlogFormSchema();
 
   type FormFields = z.infer<typeof formSchema>;
@@ -50,7 +52,7 @@ const BlogForm: React.FC = () => {
         description_en: formValues.descriptionEn,
         description_ka: formValues.descriptionKa,
         image_url: imageUrl || '',
-        user_id: user.userInfo?.id || '',
+        user_id: userId || '',
       };
       return await insertBlog(insertBlogPayload);
     },

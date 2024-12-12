@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import { generateAvatarUrl } from '@/pages/edit-profile/utils/avatars';
 import { updateUserProfile } from '@/supabase/auth';
@@ -27,14 +27,21 @@ import { z } from 'zod';
 import { createEditFormSchema } from '@/pages/edit-profile/utils/schemas/createEditFormSchema';
 import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
 
 const EditUserForm: React.FC = () => {
-  const [user, setUser] = useAtom(userAtom);
+  const user = useAtomValue(userAtom);
+  const { toast } = useToast();
 
+  const userId = user?.user.id;
   const userInfo = user?.user.user_metadata;
+  const avatarUrl = user?.user?.identities?.[0]?.identity_data?.avatar_url;
+
+  console.log(userId);
 
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
-    userInfo?.avatar_url || generateAvatarUrl('default'),
+    avatarUrl || generateAvatarUrl('default'),
   );
   const navigate = useNavigate();
 
@@ -53,37 +60,43 @@ const EditUserForm: React.FC = () => {
     },
   });
 
-  const onSubmit = async (values: FormFields) => {
-    if (!userInfo) {
-      console.error('User info is missing.');
-      return;
-    }
+  const {
+    mutate: updateProfileInfo,
+    isError,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: (formValues: FormFields) => {
+      if (!user?.user) {
+        return Promise.reject(new Error('User information is missing.'));
+      }
 
-    try {
-      await updateUserProfile({
-        id: userInfo.id,
-        full_name_en: values['full-name-en'],
-        full_name_ka: values['full-name-ka'],
-        avatar_url: values.avatar_url,
+      return updateUserProfile({
+        id: userId,
+        full_name_en: formValues['full-name-en'],
+        full_name_ka: formValues['full-name-ka'],
+        avatar_url: formValues.avatar_url,
       });
-      setUser((prev) => ({
-        ...prev,
-        userInfo: {
-          ...prev?.userInfo,
-          full_name_en: values['full-name-en'],
-          full_name_ka: values['full-name-ka'],
-          avatar_url: values.avatar_url || null,
-          email: prev?.userInfo?.email || null,
-          id: prev?.userInfo?.id || '',
-          updated_at: prev?.userInfo?.updated_at || null,
-          username: prev?.userInfo?.username || null,
-        },
-      }));
-
+    },
+    onSuccess: () => {
+      toast({
+        variant: 'default',
+        description: 'You have successfully updated your profile!',
+      });
       navigate('/');
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    },
+    onError: (error) => {
+      console.error(error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to update profile.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const onSubmit = (formValues: FormFields) => {
+    updateProfileInfo(formValues);
   };
 
   return (
@@ -193,8 +206,14 @@ const EditUserForm: React.FC = () => {
           />
 
           <Button type='submit' className='w-full text-foreground'>
-            Save Changes
+            {isPending ? 'Saving...' : 'Save Changes'}
           </Button>
+
+          {isError && (
+            <p className='text-red-500'>
+              Error updating profile: {error?.message}
+            </p>
+          )}
         </form>
       </Form>
     </div>

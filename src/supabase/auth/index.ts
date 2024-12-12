@@ -1,5 +1,5 @@
 import { supabase } from '@/supabase';
-import { Database, Tables } from '@/supabase/supabase.types';
+import { Database, Tables, TablesUpdate } from '@/supabase/supabase.types';
 import {
   SupabaseClient,
   AuthResponse,
@@ -22,7 +22,6 @@ type LoginInput = {
 };
 
 export type ProfilesRow = Tables<'profiles'>;
-type ProfileUpdateData = Database['public']['Tables']['profiles']['Update'];
 
 const supabaseWithSchema: SupabaseClient<Database> = supabase;
 
@@ -76,7 +75,7 @@ export const register = async ({
   if (data.user) {
     const { error: updateError } = await supabaseWithSchema.auth.updateUser({
       data: {
-        avatar_url: avatar_url,
+        avatar_url,
       },
     });
 
@@ -86,10 +85,7 @@ export const register = async ({
   }
 
   return {
-    data: {
-      user: data.user,
-      session: data.session,
-    },
+    data,
     error: null,
   };
 };
@@ -132,7 +128,7 @@ export const fetchUserProfile = async (userId: string) => {
   return data as ProfilesRow;
 };
 
-export const updateUserProfile = async (updates: ProfileUpdateData) => {
+export const updateUserProfile = async (updates: TablesUpdate<'profiles'>) => {
   const { id, ...profileUpdates } = updates;
 
   if (!id) {
