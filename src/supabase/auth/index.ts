@@ -147,20 +147,3 @@ export const updateUserProfile = async (updates: TablesUpdate<'profiles'>) => {
 
   return data;
 };
-
-export const fetchUserAvatar = async (
-  userId: string,
-): Promise<string | null> => {
-  const { data, error } = await supabaseWithSchema
-    .from('profiles')
-    .select('avatar_url')
-    .eq('id', userId)
-    .single();
-
-  if (error) {
-    console.error('Error fetching avatar:', error);
-    return null;
-  }
-
-  return data?.avatar_url || null;
-};

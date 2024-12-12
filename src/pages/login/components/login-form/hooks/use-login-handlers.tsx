@@ -6,6 +6,20 @@ import { userAtom } from '@/atoms/auth';
 import { useNavigate } from 'react-router-dom';
 import { TriangleAlert } from 'lucide-react';
 
+type UserIdentity = {
+  avatar_url?: string | null; // Ensure avatar_url is optional and nullable
+  updated_at?: string | null;
+};
+
+type UserProfile = {
+  id: string;
+  full_name_en: string;
+  full_name_ka: string;
+  username: string;
+  avatar_url?: string | null;
+  updated_at?: string | null;
+};
+
 type UseLoginHandlers = {
   handleLoginSuccess: () => Promise<void>;
   handleLoginError: (err: unknown) => void;
@@ -34,17 +48,21 @@ const useLoginHandlers: () => UseLoginHandlers = () => {
             return;
           }
 
+          // Set user state with proper structure
           setUser({
-            isLoggedIn: true,
-            userInfo: {
-              email: user.email ?? null,
-              username: profile.username || null,
-              avatar_url: profile.avatar_url || null,
-              full_name_en: profile.full_name_en || null,
-              full_name_ka: profile.full_name_ka || null,
-              id: profile.id,
-              updated_at: profile.updated_at || null,
+            id: user.id, // Make sure to use user.id from the user object inside session
+            email: user.email,
+            user_metadata: {
+              full_name_en: profile.full_name_en,
+              full_name_ka: profile.full_name_ka,
+              username: profile.username,
             },
+            identities: [
+              {
+                avatar_url: profile.avatar_url || null, // Handle missing avatar URL
+                updated_at: profile.updated_at || null,
+              },
+            ],
           });
 
           toast({
