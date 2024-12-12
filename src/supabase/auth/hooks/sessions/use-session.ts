@@ -13,6 +13,7 @@ export const useSession = () => {
 
     if (session) {
       setUser(session);
+      console.log(session);
     } else {
       console.log('No session found:', error);
     }

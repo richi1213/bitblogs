@@ -18,15 +18,15 @@ const ProfileDetails: React.FC = () => {
     <div>
       <Card className='mb-12 flex flex-col items-center p-8 text-muted-foreground shadow-lg md:flex-row md:items-start'>
         <ProfileAvatar
-          avatarUrl={user.userInfo?.avatar_url}
-          name={user.userInfo?.full_name_en as string}
+          avatarUrl={user?.user.user_metadata.avatar_url}
+          name={user?.user.user_metadata.full_name_en}
           className='mb-4 mt-0 border-4 border-primary md:mb-0 md:mr-8 md:mt-6'
           size='extraLarge'
         />
         <div className='flex flex-grow flex-col items-center md:items-start'>
           <CardHeader>
             <CardTitle className='mb-2 text-3xl'>
-              {user.userInfo?.full_name_en}
+              {user?.user.user_metadata.full_name_en}
             </CardTitle>
           </CardHeader>
           <CardContent className='items-center md:items-start'>

@@ -14,8 +14,6 @@ const BlogCardsWrapper: React.FC = () => {
     staleTime: 10 * 60 * 1000,
   });
 
-  console.log(blogs);
-
   if (isLoading) {
     return <Loading />;
   }

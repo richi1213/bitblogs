@@ -45,8 +45,8 @@ const Navbar: React.FC = () => {
           <ModeToggle />
           {user ? (
             <UserMenu
-              avatarUrl={user.user.user_metadata?.avatar_url}
-              name={user.user.user_metadata?.full_name_en}
+              avatarUrl={user.user?.user_metadata?.avatar_url}
+              name={user.user?.user_metadata?.full_name_en}
             />
           ) : (
             <SignInButton>{t('sign-in')}</SignInButton>

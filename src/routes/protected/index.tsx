@@ -1,11 +1,15 @@
+import Loading from '@/components/ui/loading';
+import { useAuthStatus } from '@/supabase/auth/hooks/use-auth-status';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAtomValue } from 'jotai';
-import { userAtom } from '@/atoms/auth';
 
 const ProtectedRoute: React.FC = () => {
-  const user = useAtomValue(userAtom);
+  const { isLoggedIn, isLoading } = useAuthStatus();
 
-  if (!user.isLoggedIn) {
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isLoggedIn) {
     return <Navigate to='/login' />;
   }
 

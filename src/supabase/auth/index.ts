@@ -13,6 +13,7 @@ type RegisterInput = {
   full_name_en: string;
   full_name_ka: string;
   username: string;
+  avatar_url?: null | string;
 };
 
 type LoginInput = {
@@ -47,6 +48,7 @@ export const register = async ({
   full_name_en,
   full_name_ka,
   username,
+  avatar_url = null,
 }: RegisterInput): Promise<AuthResponse> => {
   const { data, error } = await supabaseWithSchema.auth.signUp({
     email,
@@ -56,6 +58,7 @@ export const register = async ({
         full_name_en,
         full_name_ka,
         username,
+        avatar_url,
       },
     },
   });
@@ -68,6 +71,18 @@ export const register = async ({
       },
       error,
     };
+  }
+
+  if (data.user) {
+    const { error: updateError } = await supabaseWithSchema.auth.updateUser({
+      data: {
+        avatar_url: avatar_url,
+      },
+    });
+
+    if (updateError) {
+      console.error('Error updating user metadata:', updateError);
+    }
   }
 
   return {
@@ -135,4 +150,21 @@ export const updateUserProfile = async (updates: ProfileUpdateData) => {
   }
 
   return data;
+};
+
+export const fetchUserAvatar = async (
+  userId: string,
+): Promise<string | null> => {
+  const { data, error } = await supabaseWithSchema
+    .from('profiles')
+    .select('avatar_url')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching avatar:', error);
+    return null;
+  }
+
+  return data?.avatar_url || null;
 };

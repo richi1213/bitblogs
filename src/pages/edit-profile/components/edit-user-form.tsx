@@ -31,7 +31,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 const EditUserForm: React.FC = () => {
   const [user, setUser] = useAtom(userAtom);
 
-  const userInfo = user?.userInfo;
+  const userInfo = user?.user.user_metadata;
 
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
     userInfo?.avatar_url || generateAvatarUrl('default'),
