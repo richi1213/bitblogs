@@ -50,7 +50,7 @@ const BlogForm: React.FC = () => {
         description_en: formValues.descriptionEn,
         description_ka: formValues.descriptionKa,
         image_url: imageUrl || '',
-        user_id: user.userInfo?.id || '',
+        user_id: user.userInfo?.id,
       };
       return await insertBlog(insertBlogPayload);
     },

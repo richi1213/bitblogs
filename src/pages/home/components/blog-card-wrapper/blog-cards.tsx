@@ -1,20 +1,10 @@
+import React from 'react';
 import Loading from '@/components/ui/loading';
 import BlogCard from '@/pages/home/components/blog-card-wrapper/blog-card/blog-card';
-import { fetchBlogs } from '@/supabase/api/blogs';
-import { useQuery } from '@tanstack/react-query';
+import { useBlogContext } from '@/context/blogs/blog-context';
 
 const BlogCardsWrapper: React.FC = () => {
-  const {
-    data: blogs,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['blogs'],
-    queryFn: () => fetchBlogs(),
-    staleTime: 10 * 60 * 1000,
-  });
-
-  console.log(blogs);
+  const { blogs, isLoading, isError } = useBlogContext();
 
   if (isLoading) {
     return <Loading />;

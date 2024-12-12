@@ -1,15 +1,13 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Dot, User } from 'lucide-react';
-import { Tables } from '@/supabase/supabase.types';
-
-type Blog = Tables<'blogs'>;
-
-type BlogCardProps = {
-  blog: Blog;
-};
+import { BlogCardProps } from '@/pages/home/components/blog-card-wrapper/blog-card/blog-card.types';
 
 const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
+  if (!blog) {
+    return <div>No blog data available</div>;
+  }
+
   const { title_en, created_at, image_url, description_en } = blog;
 
   const blogImageUrl = image_url
@@ -39,11 +37,6 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
             </div>
             <Dot />
             <span>{date}</span>
-            {/* <Dot />
-            <div className='flex items-center gap-1'>
-              <Clock className='size-4' />
-              <span>{read_time || '5 min read'}</span>
-            </div> */}
           </div>
         </div>
       </CardHeader>

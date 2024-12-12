@@ -21,7 +21,7 @@ export const insertBlog = async (payload: BlogsInsertPayload) => {
   return data;
 };
 
-export const fetchBlogs = async () => {
+export const fetchBlogs = async (): Promise<BlogRow[] | null> => {
   const { data, error } = await supabase
     .from('blogs')
     .select('*')
