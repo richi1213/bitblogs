@@ -1,13 +1,32 @@
-import { InputHTMLAttributes, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import qs from 'qs';
+import {
+  FormValues,
+  SearchInputProps,
+} from '@/components/layout/components/navbar/components/search-input/search-input.types';
+import { useSearchParams } from 'react-router-dom';
 
-interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {}
-
-const SearchInput: React.FC = ({ className, ...props }: SearchInputProps) => {
+const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const [searchParams] = useSearchParams();
+
+  const parsedQueryParams = qs.parse(searchParams.toString());
+
+  const { control, watch } = useForm<FormValues>({
+    defaultValues: parsedQueryParams,
+  });
+
+  useEffect(() => {
+    const searchText = parsedQueryParams?.searchText;
+  }, []);
+
+  const watchedSearchText = watch('searchText');
 
   const handleSearchClick = () => {
     setIsExpanded(!isExpanded);
@@ -18,20 +37,27 @@ const SearchInput: React.FC = ({ className, ...props }: SearchInputProps) => {
 
   return (
     <div className={cn('relative', className)}>
-      <Input
-        type='search'
-        placeholder='Type to search'
-        className={cn(
-          'h-9 w-[250px] pl-8 transition-all duration-300 focus-visible:ring-1',
-          isExpanded
-            ? 'max-sm:w-[160px]'
-            : 'max-sm:w-9 max-sm:px-0 max-sm:pl-9',
-          'bg-background text-foreground placeholder:text-muted-foreground',
-          'border-input hover:bg-accent hover:text-accent-foreground',
-          'focus-visible:ring-ring',
+      <Controller
+        name='searchText'
+        control={control}
+        render={({ field }) => (
+          <Input
+            type='search'
+            placeholder='Type to search'
+            className={cn(
+              'h-9 w-[250px] pl-8 transition-all duration-300 focus-visible:ring-1',
+              isExpanded
+                ? 'max-sm:w-[160px]'
+                : 'max-sm:w-9 max-sm:px-0 max-sm:pl-9',
+              'bg-background text-foreground placeholder:text-muted-foreground',
+              'border-input hover:bg-accent hover:text-accent-foreground',
+              'text-sm focus-visible:ring-ring',
+            )}
+            {...field} // Pass the value and onChange from react-hook-form automatically
+            {...props}
+            ref={field.ref}
+          />
         )}
-        ref={inputRef}
-        {...props}
       />
       <Search
         className={cn(

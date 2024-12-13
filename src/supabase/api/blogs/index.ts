@@ -34,3 +34,30 @@ export const fetchBlogs = async (): Promise<BlogRow[] | null> => {
 
   return data as BlogRow[];
 };
+
+export const searchBlogs = async (
+  searchTerm: string,
+): Promise<BlogRow[] | null> => {
+  if (!searchTerm.trim()) {
+    return [];
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('*')
+      .ilike('title_en', `%${searchTerm}%`)
+      .or(`title_en.ilike.%${searchTerm}%,description_en.ilike.%${searchTerm}%`)
+      .throwOnError();
+
+    if (error) {
+      console.error('Error searching blogs:', error.message);
+      return null;
+    }
+
+    return data as BlogRow[];
+  } catch (error) {
+    console.error('Error searching blogs:', error);
+    return null;
+  }
+};
