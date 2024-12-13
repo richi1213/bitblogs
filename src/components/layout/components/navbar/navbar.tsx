@@ -1,14 +1,10 @@
 import { Link } from 'react-router-dom';
-import {
-  SearchButton,
-  SignInButton,
-  LanguagePicker,
-  ModeToggle,
-} from './components';
+import { SignInButton, LanguagePicker, ModeToggle } from './components';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import UserMenu from '@/pages/profile/components/user-menu';
+import SearchInput from '@/components/layout/components/navbar/components/search-input/search-input';
 
 const Navbar: React.FC = () => {
   const user = useAtomValue(userAtom);
@@ -40,7 +36,7 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className='flex items-center space-x-4'>
-          <SearchButton />
+          <SearchInput />
           <LanguagePicker />
           <ModeToggle />
           {user.isLoggedIn ? (
