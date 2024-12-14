@@ -3,7 +3,7 @@ import { supabase } from '@/supabase';
 import { fetchUserProfile } from '@/supabase/auth';
 import { useSetAtom } from 'jotai';
 import { userAtom } from '@/atoms/auth';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TriangleAlert } from 'lucide-react';
 
 type UseLoginHandlers = {
@@ -12,6 +12,10 @@ type UseLoginHandlers = {
 };
 
 const useLoginHandlers: () => UseLoginHandlers = () => {
+  const location = useLocation();
+
+  const redirectPath = location?.state?.from || '/';
+
   const setUser = useSetAtom(userAtom);
   const navigate = useNavigate();
 
@@ -54,7 +58,7 @@ const useLoginHandlers: () => UseLoginHandlers = () => {
             duration: 2000,
           });
 
-          navigate('/');
+          navigate(redirectPath);
         }
       } catch (err) {
         console.error('Error handling login:', err);

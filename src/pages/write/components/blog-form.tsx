@@ -1,4 +1,5 @@
 import { userAtom } from '@/atoms/auth';
+import { defaultFormState, formAtom } from '@/atoms/blogs';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -16,14 +17,16 @@ import { insertBlog, uploadImage } from '@/supabase/api/blogs';
 import { BlogsInsertPayload } from '@/supabase/api/blogs/index.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const BlogForm: React.FC = () => {
   const user = useAtomValue(userAtom);
+  const [formState, setFormState] = useAtom(formAtom);
   const queryClient = useQueryClient();
+  const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -34,13 +37,7 @@ const BlogForm: React.FC = () => {
   const form = useForm<FormFields>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
-    defaultValues: {
-      titleEn: '',
-      titleKa: '',
-      descriptionEn: '',
-      descriptionKa: '',
-      imageFile: undefined,
-    },
+    defaultValues: formState || defaultFormState,
   });
 
   const { mutate } = useMutation({
@@ -63,6 +60,8 @@ const BlogForm: React.FC = () => {
       });
       queryClient.invalidateQueries({ queryKey: ['blogs'] });
       form.reset();
+      localStorage.removeItem('blogFormState');
+      setFormState(defaultFormState);
       navigate('/');
     },
     onError: (error) => {
@@ -76,7 +75,27 @@ const BlogForm: React.FC = () => {
   });
 
   const onSubmit = (formValues: FormFields) => {
+    if (!user.isLoggedIn) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please log in to create a blog.',
+        variant: 'destructive',
+      });
+      navigate('/login', { state: { from: location.pathname } });
+      return;
+    }
+
     mutate(formValues);
+  };
+
+  const handleChange = (
+    fieldName: keyof FormFields,
+    value: string | undefined,
+  ) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [fieldName]: value,
+    }));
   };
 
   return (
@@ -92,7 +111,14 @@ const BlogForm: React.FC = () => {
             <FormItem>
               <FormLabel className='text-foreground'>Title (English)</FormLabel>
               <FormControl>
-                <Input {...field} onBlur={() => form.trigger('titleEn')} />
+                <Input
+                  {...field}
+                  onBlur={() => form.trigger('titleEn')}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleChange('titleEn', e.target.value);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -108,7 +134,14 @@ const BlogForm: React.FC = () => {
                 Title (Georgian)
               </FormLabel>
               <FormControl>
-                <Input {...field} onBlur={() => form.trigger('titleKa')} />
+                <Input
+                  {...field}
+                  onBlur={() => form.trigger('titleKa')}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleChange('titleKa', e.target.value);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -128,6 +161,10 @@ const BlogForm: React.FC = () => {
                   {...field}
                   onBlur={() => form.trigger('descriptionEn')}
                   className='h-28'
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleChange('descriptionEn', e.target.value);
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -148,6 +185,10 @@ const BlogForm: React.FC = () => {
                   {...field}
                   onBlur={() => form.trigger('descriptionKa')}
                   className='h-28'
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleChange('descriptionKa', e.target.value);
+                  }}
                 />
               </FormControl>
               <FormMessage />
