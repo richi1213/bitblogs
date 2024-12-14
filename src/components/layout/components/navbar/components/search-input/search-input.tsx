@@ -10,12 +10,13 @@ import {
 } from '@/components/layout/components/navbar/components/search-input/search-input.types';
 import { useSearchParams } from 'react-router-dom';
 import { useBlogContext } from '@/context/blogs/blog-context';
+import { useDebounceValue } from 'usehooks-ts';
 
 const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const parsedQueryParams = qs.parse(searchParams.toString());
 
   const { control, watch } = useForm<FormValues>({
@@ -25,18 +26,31 @@ const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
   const { setSearchText } = useBlogContext();
 
   useEffect(() => {
-    // Set the initial search text from the query params
     if (parsedQueryParams?.searchText) {
       setSearchText(parsedQueryParams.searchText as string);
     }
   }, [parsedQueryParams, setSearchText]);
 
   const watchedSearchText = watch('searchText');
+  const [debouncedSearchText] = useDebounceValue(watchedSearchText, 200);
 
   useEffect(() => {
-    // Update the context whenever the search text changes
-    setSearchText(watchedSearchText ?? null);
-  }, [watchedSearchText, setSearchText]);
+    setSearchText(debouncedSearchText ?? null);
+
+    if (debouncedSearchText) {
+      setSearchParams((prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+        newParams.set('searchText', debouncedSearchText);
+        return newParams;
+      });
+    } else {
+      setSearchParams((prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+        newParams.delete('searchText');
+        return newParams;
+      });
+    }
+  }, [debouncedSearchText, setSearchText, setSearchParams]);
 
   const handleSearchClick = () => {
     setIsExpanded(!isExpanded);
