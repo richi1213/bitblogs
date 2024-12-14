@@ -30,6 +30,7 @@
     "@types/qs": "^6.9.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "i18next": "^23.16.5",
     "jotai": "^2.10.3",
     "lucide-react": "^0.460.0",

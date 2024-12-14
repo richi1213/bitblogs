@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Dot, User } from 'lucide-react';
 import { BlogCardProps } from '@/pages/home/components/blog-card-wrapper/blog-card/blog-card.types';
+import { formatBlogDate } from '@/utils/dates/date-formatter';
 
 const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
   if (!blog) {
@@ -14,7 +15,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
     ? `${import.meta.env.VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL}/${image_url}`
     : '';
 
-  const date = new Date(created_at).toLocaleDateString();
+  const formattedDate = formatBlogDate(created_at);
 
   return (
     <Card className='overflow-hidden p-4 transition-all hover:shadow-lg'>
@@ -36,7 +37,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
               <span className='hover:underline'>TEMP AUTHOR</span>
             </div>
             <Dot />
-            <span>{date}</span>
+            <span>{formattedDate}</span>
           </div>
         </div>
       </CardHeader>
