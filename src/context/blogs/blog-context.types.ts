@@ -4,4 +4,5 @@ export type BlogContextType = {
   blogs: Blog[] | null | undefined;
   isLoading: boolean;
   isError: boolean;
+  setSearchText: (value: string | null) => void;
 };

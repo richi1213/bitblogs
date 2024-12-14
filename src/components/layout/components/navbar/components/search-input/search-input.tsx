@@ -9,24 +9,34 @@ import {
   SearchInputProps,
 } from '@/components/layout/components/navbar/components/search-input/search-input.types';
 import { useSearchParams } from 'react-router-dom';
+import { useBlogContext } from '@/context/blogs/blog-context';
 
 const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [searchParams] = useSearchParams();
-
   const parsedQueryParams = qs.parse(searchParams.toString());
 
   const { control, watch } = useForm<FormValues>({
-    defaultValues: parsedQueryParams,
+    defaultValues: parsedQueryParams || '',
   });
 
+  const { setSearchText } = useBlogContext();
+
   useEffect(() => {
-    const searchText = parsedQueryParams?.searchText;
-  }, []);
+    // Set the initial search text from the query params
+    if (parsedQueryParams?.searchText) {
+      setSearchText(parsedQueryParams.searchText as string);
+    }
+  }, [parsedQueryParams, setSearchText]);
 
   const watchedSearchText = watch('searchText');
+
+  useEffect(() => {
+    // Update the context whenever the search text changes
+    setSearchText(watchedSearchText ?? null);
+  }, [watchedSearchText, setSearchText]);
 
   const handleSearchClick = () => {
     setIsExpanded(!isExpanded);
@@ -43,6 +53,8 @@ const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
         render={({ field }) => (
           <Input
             type='search'
+            onChange={field.onChange}
+            value={field.value ?? ''}
             placeholder='Type to search'
             className={cn(
               'h-9 w-[250px] pl-8 transition-all duration-300 focus-visible:ring-1',
@@ -53,9 +65,11 @@ const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
               'border-input hover:bg-accent hover:text-accent-foreground',
               'text-sm focus-visible:ring-ring',
             )}
-            {...field} // Pass the value and onChange from react-hook-form automatically
             {...props}
-            ref={field.ref}
+            ref={(e) => {
+              field.ref(e);
+              inputRef.current = e;
+            }}
           />
         )}
       />

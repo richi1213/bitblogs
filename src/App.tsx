@@ -1,10 +1,10 @@
-import { ThemeProvider } from '@/components/theme-provider';
 import { RouterProvider } from 'react-router-dom';
 import { router } from '@/routes';
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import Loading from '@/components/ui/loading';
+import { BlogProvider } from '@/context/blogs/blog-context';
 
 const App: React.FC = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -28,9 +28,9 @@ const App: React.FC = () => {
   }
 
   return (
-    <ThemeProvider>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <BlogProvider>
+      <RouterProvider router={router} />;
+    </BlogProvider>
   );
 };
 

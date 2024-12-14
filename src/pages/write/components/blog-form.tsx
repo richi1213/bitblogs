@@ -18,11 +18,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const BlogForm: React.FC = () => {
   const user = useAtomValue(userAtom);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const formSchema = createBlogFormSchema();
@@ -61,6 +63,7 @@ const BlogForm: React.FC = () => {
       });
       queryClient.invalidateQueries({ queryKey: ['blogs'] });
       form.reset();
+      navigate('/');
     },
     onError: (error) => {
       console.error(error);

@@ -46,7 +46,6 @@ export const searchBlogs = async (
     const { data, error } = await supabase
       .from('blogs')
       .select('*')
-      .ilike('title_en', `%${searchTerm}%`)
       .or(`title_en.ilike.%${searchTerm}%,description_en.ilike.%${searchTerm}%`)
       .throwOnError();
 
