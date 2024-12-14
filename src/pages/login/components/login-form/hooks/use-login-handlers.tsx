@@ -13,7 +13,6 @@ type UseLoginHandlers = {
 
 const useLoginHandlers: () => UseLoginHandlers = () => {
   const location = useLocation();
-
   const redirectPath = location?.state?.from || '/';
 
   const setUser = useSetAtom(userAtom);
@@ -58,7 +57,7 @@ const useLoginHandlers: () => UseLoginHandlers = () => {
             duration: 2000,
           });
 
-          navigate(redirectPath);
+          navigate(redirectPath, { replace: true });
         }
       } catch (err) {
         console.error('Error handling login:', err);
