@@ -29,7 +29,7 @@ const App: React.FC = () => {
 
   return (
     <BlogProvider>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </BlogProvider>
   );
 };
