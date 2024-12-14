@@ -76,7 +76,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
                 ? 'max-sm:w-[160px]'
                 : 'max-sm:w-9 max-sm:px-0 max-sm:pl-9',
               'bg-background text-foreground placeholder:text-muted-foreground',
-              'border-input hover:bg-accent hover:text-accent-foreground',
+              'border-input',
               'text-sm focus-visible:ring-ring',
             )}
             {...props}

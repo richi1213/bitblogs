@@ -39,7 +39,10 @@ const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
+        <Button
+          variant='ghost'
+          className='relative h-8 w-8 rounded-full hover:bg-primary'
+        >
           <ProfileAvatar avatarUrl={avatarUrl} name={name} />
         </Button>
       </DropdownMenuTrigger>

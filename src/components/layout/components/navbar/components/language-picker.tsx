@@ -13,7 +13,7 @@ export const LanguagePicker: React.FC = () => {
   return (
     <div className='relative'>
       <button
-        className='text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white'
+        className='text-foreground hover:text-accent focus:outline-none'
         onClick={() => setIsOpen(!isOpen)}
       >
         <Globe className='h-5 w-5' />
@@ -21,11 +21,11 @@ export const LanguagePicker: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className='absolute right-0 mt-2 w-32 rounded-md bg-white shadow-lg dark:bg-gray-800'>
-          <ul className='py-1 text-sm text-gray-700 dark:text-gray-300'>
+        <div className='absolute right-0 mt-2 w-32 rounded-md bg-popover shadow-lg'>
+          <ul className='py-1 text-sm'>
             <li>
               <button
-                className='block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700'
+                className='block w-full px-4 py-2 text-left text-popover-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none'
                 onClick={() => changeLanguage('en')}
               >
                 English
@@ -33,7 +33,7 @@ export const LanguagePicker: React.FC = () => {
             </li>
             <li>
               <button
-                className='block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700'
+                className='block w-full px-4 py-2 text-left text-popover-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none'
                 onClick={() => changeLanguage('ka')}
               >
                 ქართული
