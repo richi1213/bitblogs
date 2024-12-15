@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchBlogs, searchBlogs } from '@/supabase/api/blogs';
 import { BlogContextType } from '@/context/blogs/blog-context.types';
-
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
 
 export const BlogProvider: React.FC<React.PropsWithChildren> = ({
@@ -24,7 +23,7 @@ export const BlogProvider: React.FC<React.PropsWithChildren> = ({
     placeholderData: [],
   });
 
-  const contextValue = useMemo(
+  const blogContextValue = useMemo(
     () => ({
       blogs,
       isLoading,
@@ -35,7 +34,9 @@ export const BlogProvider: React.FC<React.PropsWithChildren> = ({
   );
 
   return (
-    <BlogContext.Provider value={contextValue}>{children}</BlogContext.Provider>
+    <BlogContext.Provider value={blogContextValue}>
+      {children}
+    </BlogContext.Provider>
   );
 };
 

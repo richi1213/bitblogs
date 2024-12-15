@@ -4,7 +4,7 @@ const Mission: React.FC = () => {
       <div className='space-y-4'>
         <h2 className='text-2xl font-semibold'>Our Mission</h2>
         <p className='text-md text-muted-foreground'>
-          At bitBlogs, we believe in the power of shared knowledge. Our mission
+          At BitBlogs, we believe in the power of shared knowledge. Our mission
           is to create a platform where tech enthusiasts, developers, and
           innovators can come together to share ideas, learn from each other,
           and push the boundaries of what's possible in the world of technology.
