@@ -25,4 +25,13 @@ export const createBlogFormSchema = () =>
         (file) => ['image/jpeg', 'image/png', 'image/gif'].includes(file.type),
         { message: 'Only JPEG, PNG, or GIF images are allowed.' },
       ),
+    tags: z
+      .array(
+        z
+          .number({ invalid_type_error: 'Each tag must be a valid ID.' })
+          .int()
+          .positive({ message: 'Tag IDs must be positive integers.' }),
+      )
+      .min(1, { message: 'At least one tag is required.' })
+      .max(5, { message: 'You can only select up to 5 tags.' }),
   });

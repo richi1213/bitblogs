@@ -3,5 +3,6 @@ export type BlogFormState = {
   titleKa: string;
   descriptionEn: string;
   descriptionKa: string;
+  tags_ids: number[];
   imageFile?: File;
 };

@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import Loading from '@/components/ui/loading';
 import { BlogProvider } from '@/context/blogs/blog-context';
+import { TagProvider } from '@/context/tags/tag-context';
 
 const App: React.FC = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -29,7 +30,9 @@ const App: React.FC = () => {
 
   return (
     <BlogProvider>
-      <RouterProvider router={router} />
+      <TagProvider>
+        <RouterProvider router={router} />
+      </TagProvider>
     </BlogProvider>
   );
 };

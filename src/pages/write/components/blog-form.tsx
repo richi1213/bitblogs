@@ -12,9 +12,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { FancyMultiSelect } from '@/pages/write/components/ui/fancy-multi-select';
 import { createBlogFormSchema } from '@/pages/write/utils/schemas/createBlogFormSchema';
 import { insertBlog, uploadImage } from '@/supabase/api/blogs';
 import { BlogsInsertPayload } from '@/supabase/api/blogs/index.types';
+import { Tag } from '@/supabase/api/tags/index.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAtom, useAtomValue } from 'jotai';
@@ -50,6 +52,7 @@ const BlogForm: React.FC = () => {
         description_ka: formValues.descriptionKa,
         image_url: imageUrl || '',
         user_id: user.userInfo?.id,
+        tag_ids: formValues.tags,
       };
       return await insertBlog(insertBlogPayload);
     },
@@ -86,6 +89,7 @@ const BlogForm: React.FC = () => {
     }
 
     mutate(formValues);
+    console.log(formValues);
   };
 
   const handleChange = (
@@ -96,6 +100,11 @@ const BlogForm: React.FC = () => {
       ...prevState,
       [fieldName]: value,
     }));
+  };
+
+  const handleTagsChange = (tags: Tag[]) => {
+    const tagIds = tags.map((tag) => tag.id);
+    form.setValue('tags', tagIds);
   };
 
   return (
@@ -190,6 +199,20 @@ const BlogForm: React.FC = () => {
                     handleChange('descriptionKa', e.target.value);
                   }}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='tags'
+          render={() => (
+            <FormItem>
+              <FormLabel className='text-foreground'>Tags</FormLabel>
+              <FormControl>
+                <FancyMultiSelect onTagsChange={handleTagsChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

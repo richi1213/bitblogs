@@ -6,6 +6,7 @@ export const defaultFormState: BlogFormState = {
   titleKa: '',
   descriptionEn: '',
   descriptionKa: '',
+  tags_ids: [],
   imageFile: undefined,
 };
 

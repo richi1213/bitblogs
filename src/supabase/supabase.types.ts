@@ -49,6 +49,7 @@ export type Database = {
           description_ka: string | null
           id: number
           image_url: string | null
+          tag_ids: number[] | null
           title_en: string | null
           title_ka: string | null
           user_id: string | null
@@ -59,6 +60,7 @@ export type Database = {
           description_ka?: string | null
           id?: number
           image_url?: string | null
+          tag_ids?: number[] | null
           title_en?: string | null
           title_ka?: string | null
           user_id?: string | null
@@ -69,6 +71,7 @@ export type Database = {
           description_ka?: string | null
           id?: number
           image_url?: string | null
+          tag_ids?: number[] | null
           title_en?: string | null
           title_ka?: string | null
           user_id?: string | null
@@ -118,16 +121,19 @@ export type Database = {
           created_at: string
           id: number
           name: string | null
+          slug: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           name?: string | null
+          slug?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           name?: string | null
+          slug?: string | null
         }
         Relationships: []
       }
