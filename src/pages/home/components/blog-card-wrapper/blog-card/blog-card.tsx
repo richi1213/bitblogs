@@ -79,7 +79,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
           {tags?.map((tag) => (
             <Badge
               key={tag.id}
-              className='badge badge-secondary bg-secondary text-muted'
+              className='badge badge-secondary bg-secondary text-accent-foreground'
             >
               {tag.name}
             </Badge>
