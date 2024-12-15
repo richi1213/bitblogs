@@ -105,6 +105,10 @@ const BlogForm: React.FC = () => {
   const handleTagsChange = (tags: Tag[]) => {
     const tagIds = tags.map((tag) => tag.id);
     form.setValue('tags', tagIds);
+    setFormState((prevState) => ({
+      ...prevState,
+      tags_ids: tagIds,
+    }));
   };
 
   return (
@@ -212,7 +216,10 @@ const BlogForm: React.FC = () => {
             <FormItem>
               <FormLabel className='text-foreground'>Tags</FormLabel>
               <FormControl>
-                <FancyMultiSelect onTagsChange={handleTagsChange} />
+                <FancyMultiSelect
+                  selectedTagIds={formState.tags_ids}
+                  onTagsChange={handleTagsChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

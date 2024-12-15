@@ -9,18 +9,31 @@ import {
 import { Command as CommandPrimitive } from 'cmdk';
 import { useTagContext } from '@/context/tags/tag-context';
 import { Tag } from '@/supabase/api/tags/index.types';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type FancyMultiSelectProps = {
+  selectedTagIds: number[];
   onTagsChange: (tags: Tag[]) => void;
 };
 
-export function FancyMultiSelect({ onTagsChange }: FancyMultiSelectProps) {
+export function FancyMultiSelect({
+  selectedTagIds,
+  onTagsChange,
+}: FancyMultiSelectProps) {
   const { tags } = useTagContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Tag[]>([]);
   const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    if (tags) {
+      const initialSelected = tags.filter((tag) =>
+        selectedTagIds.includes(tag.id),
+      );
+      setSelected(initialSelected);
+    }
+  }, [tags, selectedTagIds]);
 
   const handleUnselect = useCallback(
     (tag: Tag) => {
@@ -55,7 +68,6 @@ export function FancyMultiSelect({ onTagsChange }: FancyMultiSelectProps) {
     [onTagsChange],
   );
 
-  // Exclude already selected tags from dropdown
   const selectables = tags
     ? tags.filter((tag) => !selected.some((s) => s.slug === tag.slug))
     : [];

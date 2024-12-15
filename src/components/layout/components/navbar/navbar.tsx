@@ -14,9 +14,11 @@ const Navbar: React.FC = () => {
     <nav className='flex items-center justify-between border-b bg-background p-4 text-foreground'>
       <div className='container mx-auto flex items-center justify-between'>
         <div className='flex cursor-pointer items-center'>
-          <span className='text-2xl font-bold hover:text-muted-foreground'>
-            BitBlogs
-          </span>
+          <Link to='/'>
+            <span className='text-2xl font-bold hover:text-muted-foreground'>
+              BitBlogs
+            </span>
+          </Link>
         </div>
 
         <div className='hidden space-x-4 md:flex'>
