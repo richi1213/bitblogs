@@ -30,7 +30,7 @@ const TagSlider: React.FC = () => {
     }
 
     setSelectedTagIds(tagsFromUrl.map((tag) => parseInt(tag)));
-  }, [searchParams, setSelectedTagIds]);
+  }, []);
 
   // To update searchParams when selectedTagIds changes
   useEffect(() => {
