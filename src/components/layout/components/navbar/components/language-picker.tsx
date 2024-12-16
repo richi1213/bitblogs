@@ -21,7 +21,7 @@ export const LanguagePicker: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className='absolute right-0 mt-2 w-32 rounded-md bg-popover shadow-lg'>
+        <div className='absolute right-0 z-50 mt-2 w-32 rounded-md bg-popover shadow-lg'>
           <ul className='py-1 text-sm'>
             <li>
               <button
