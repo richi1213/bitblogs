@@ -12,36 +12,56 @@ const TagSlider: React.FC = () => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // To initialize selectedTagIds from URL on mount
+  const tagSlugToId = new Map(tags?.map((tag) => [tag.slug, tag.id]));
+
+  // Initialize selectedTagIds from URL on mount
   useEffect(() => {
     const parsedParams = qs.parse(searchParams.toString());
-    let tagsFromUrl: string[] = [];
+    let slugsFromUrl: string[] = [];
 
     if (parsedParams.tags) {
       if (Array.isArray(parsedParams.tags)) {
-        tagsFromUrl = parsedParams.tags.filter(
+        slugsFromUrl = parsedParams.tags.filter(
           (tag) => typeof tag === 'string',
         );
       } else {
-        tagsFromUrl = [parsedParams.tags].filter(
+        slugsFromUrl = [parsedParams.tags].filter(
           (tag) => typeof tag === 'string',
         );
       }
     }
 
-    setSelectedTagIds(tagsFromUrl.map((tag) => parseInt(tag)));
+    // Convert slugs to tag IDs
+    const tagIdsFromSlugs = slugsFromUrl
+      .map((slug) => tagSlugToId.get(slug))
+      .filter(Boolean);
+    setSelectedTagIds(tagIdsFromSlugs as number[]);
   }, []);
 
-  // To update searchParams when selectedTagIds changes
+  // Update searchParams when selectedTagIds changes
   useEffect(() => {
-    const updatedParams = qs.stringify(
-      {
-        tags: selectedTagIds?.length ? selectedTagIds.map(String) : undefined,
-      },
-      { arrayFormat: 'repeat' },
-    );
+    const slugsFromIds = selectedTagIds
+      .map((id) => {
+        const tag = tags?.find((tag) => tag.id === id);
+        return tag?.slug;
+      })
+      .filter(Boolean);
+
+    const updatedParams = new URLSearchParams(searchParams.toString());
+
+    if (slugsFromIds.length) {
+      updatedParams.set('tags', slugsFromIds.join(','));
+    } else {
+      updatedParams.delete('tags');
+    }
+
+    const searchText = searchParams.get('searchText');
+    if (searchText) {
+      updatedParams.set('searchText', searchText);
+    }
+
     setSearchParams(updatedParams);
-  }, [selectedTagIds, setSearchParams]);
+  }, [selectedTagIds, setSearchParams, tags, searchParams]);
 
   const toggleTag = (tagId: number) => {
     setSelectedTagIds((prevTags: number[]) => {
