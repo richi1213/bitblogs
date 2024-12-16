@@ -5,4 +5,8 @@ export type BlogContextType = {
   isLoading: boolean;
   isError: boolean;
   setSearchText: (value: string | null) => void;
+  selectedTagIds: number[];
+  setSelectedTagIds: (
+    value: number[] | ((prevTags: number[]) => number[]),
+  ) => void;
 };

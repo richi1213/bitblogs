@@ -15,7 +15,6 @@ import { useDebounceValue } from 'usehooks-ts';
 const SearchInput: React.FC<SearchInputProps> = ({ className, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const parsedQueryParams = qs.parse(searchParams.toString());
 

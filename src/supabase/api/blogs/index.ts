@@ -37,17 +37,26 @@ export const fetchBlogs = async (): Promise<BlogRow[] | null> => {
 
 export const searchBlogs = async (
   searchTerm: string,
+  tagIds: number[],
 ): Promise<BlogRow[] | null> => {
-  if (!searchTerm.trim()) {
+  if (!searchTerm.trim() && (!tagIds || tagIds.length === 0)) {
     return [];
   }
 
   try {
-    const { data, error } = await supabase
-      .from('blogs')
-      .select('*')
-      .or(`title_en.ilike.%${searchTerm}%,description_en.ilike.%${searchTerm}%`)
-      .throwOnError();
+    let query = supabase.from('blogs').select('*');
+
+    if (searchTerm.trim()) {
+      query = query.or(
+        `title_en.ilike.%${searchTerm}%,description_en.ilike.%${searchTerm}%`,
+      );
+    }
+
+    if (tagIds && tagIds.length > 0) {
+      query = query.contains('tag_ids', tagIds);
+    }
+
+    const { data, error } = await query.throwOnError();
 
     if (error) {
       console.error('Error searching blogs:', error.message);

@@ -1,22 +1,57 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTagContext } from '@/context/tags/tag-context';
+import { useBlogContext } from '@/context/blogs/blog-context';
+import qs from 'qs';
+import { useSearchParams } from 'react-router-dom';
 
 const TagSlider: React.FC = () => {
   const { tags } = useTagContext();
-  const [selectedTags, setSelectedTags] = useState<Set<number>>(new Set());
+  const { selectedTagIds, setSelectedTagIds } = useBlogContext();
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // To initialize selectedTagIds from URL on mount
+  useEffect(() => {
+    const parsedParams = qs.parse(searchParams.toString());
+    let tagsFromUrl: string[] = [];
+
+    if (parsedParams.tags) {
+      if (Array.isArray(parsedParams.tags)) {
+        tagsFromUrl = parsedParams.tags.filter(
+          (tag) => typeof tag === 'string',
+        );
+      } else {
+        tagsFromUrl = [parsedParams.tags].filter(
+          (tag) => typeof tag === 'string',
+        );
+      }
+    }
+
+    setSelectedTagIds(tagsFromUrl.map((tag) => parseInt(tag)));
+  }, [searchParams, setSelectedTagIds]);
+
+  // To update searchParams when selectedTagIds changes
+  useEffect(() => {
+    const updatedParams = qs.stringify(
+      {
+        tags: selectedTagIds?.length ? selectedTagIds.map(String) : undefined,
+      },
+      { arrayFormat: 'repeat' },
+    );
+    setSearchParams(updatedParams);
+  }, [selectedTagIds, setSearchParams]);
 
   const toggleTag = (tagId: number) => {
-    setSelectedTags((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(tagId)) {
-        newSet.delete(tagId);
+    setSelectedTagIds((prevTags: number[]) => {
+      const newTags = new Set(prevTags);
+      if (newTags.has(tagId)) {
+        newTags.delete(tagId);
       } else {
-        newSet.add(tagId);
+        newTags.add(tagId);
       }
-      return newSet;
+      return Array.from(newTags);
     });
   };
 
@@ -49,7 +84,7 @@ const TagSlider: React.FC = () => {
             key={tag.id}
             variant='outline'
             className={`shrink-0 rounded-full ${
-              selectedTags.has(tag.id)
+              selectedTagIds?.includes(tag.id)
                 ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                 : ''
             }`}

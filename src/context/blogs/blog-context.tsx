@@ -8,16 +8,24 @@ export const BlogProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const [searchText, setSearchText] = useState<string | null>(null);
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
   const {
     data: blogs,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['blogs', { searchText }],
+    queryKey: ['blogs', { searchText, selectedTagIds }],
     queryFn: ({ queryKey }) => {
-      const [, { searchText }] = queryKey as [string, { searchText: string }];
-      return searchText ? searchBlogs(searchText) : fetchBlogs();
+      const [, { searchText, selectedTagIds }] = queryKey as [
+        string,
+        { searchText: string; selectedTagIds: number[] },
+      ];
+      if (searchText || selectedTagIds?.length) {
+        return searchBlogs(searchText || '', selectedTagIds);
+      }
+
+      return fetchBlogs();
     },
     staleTime: 10 * 60 * 1000,
     placeholderData: [],
@@ -29,8 +37,10 @@ export const BlogProvider: React.FC<React.PropsWithChildren> = ({
       isLoading,
       isError,
       setSearchText,
+      selectedTagIds,
+      setSelectedTagIds,
     }),
-    [blogs, isLoading, isError],
+    [blogs, isLoading, isError, searchText, selectedTagIds],
   );
 
   return (
