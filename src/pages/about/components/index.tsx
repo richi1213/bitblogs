@@ -6,7 +6,7 @@ import AboutTitle from '@/pages/about/components/title/about-title';
 
 const About: React.FC = () => {
   return (
-    <div className='mx-auto max-w-4xl space-y-12'>
+    <div className='mx-auto mt-2 max-w-4xl space-y-12'>
       <AboutTitle />
       <Mission />
       <WhatWeOffer />

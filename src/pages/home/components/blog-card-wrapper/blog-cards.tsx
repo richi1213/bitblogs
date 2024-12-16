@@ -15,7 +15,7 @@ const BlogCardsWrapper: React.FC = () => {
   }
 
   return (
-    <section className='flex flex-col space-y-8 md:w-2/3'>
+    <section className='flex flex-col space-y-8 md:col-span-8 lg:col-span-9 xl:col-span-10'>
       {blogs.map((blog) => (
         <BlogCard key={blog.id} blog={blog} />
       ))}
