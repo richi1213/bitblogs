@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 
@@ -30,12 +31,12 @@ const PopularTagsCard: React.FC<PopularTagsProps> = ({
       <CardContent>
         <div className='flex flex-wrap gap-2'>
           {tags.map((tag) => (
-            <button
+            <Badge
               key={tag.name}
-              className='rounded-md bg-[#4263EB] px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-[#4263EB]/90'
+              className='cursor-pointer rounded-md bg-secondary px-3 py-1 text-xs font-medium text-accent-foreground transition-colors'
             >
               {tag.name}
-            </button>
+            </Badge>
           ))}
         </div>
       </CardContent>
