@@ -14,6 +14,7 @@ import useLogOut from '@/atoms/auth/hooks/use-log-out';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import { useNavigate } from 'react-router-dom';
+import { PROFILE_PATHS } from '@/routes/protected/is-unauthorized/profile/enums';
 
 const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
   const user = useAtomValue(userAtom);
@@ -22,7 +23,7 @@ const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
 
   const handleProfileClick = () => {
     if (user?.userInfo?.username) {
-      navigate(`/profile/${user.userInfo.username}`);
+      navigate(`${PROFILE_PATHS.PROFILE}/${user.userInfo.username}`);
     } else {
       console.error('Username is not available');
     }
@@ -30,7 +31,7 @@ const UserMenu: React.FC<ProfileAvatarProps> = ({ avatarUrl, name }) => {
 
   const handleProfileEditClick = () => {
     if (user?.userInfo?.username) {
-      navigate('/profile/edit');
+      navigate(PROFILE_PATHS.EDIT);
     } else {
       console.error('Edit is not available');
     }

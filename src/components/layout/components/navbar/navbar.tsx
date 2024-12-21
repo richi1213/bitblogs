@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 import { userAtom } from '@/atoms/auth';
 import UserMenu from '@/pages/profile/components/user-menu';
 import SearchInput from '@/components/layout/components/navbar/components/search-input/search-input';
+import { DEFAULT_PATHS } from '@/routes/unprotected/enums';
 
 const Navbar: React.FC = () => {
   const user = useAtomValue(userAtom);
@@ -26,13 +27,13 @@ const Navbar: React.FC = () => {
             {t('home')}
           </Link>
           <Link
-            to='/write'
+            to={DEFAULT_PATHS.WRITE}
             className='text-muted-foreground hover:text-foreground'
           >
             {t('write')}
           </Link>
           <Link
-            to='/about'
+            to={DEFAULT_PATHS.ABOUT}
             className='text-muted-foreground hover:text-foreground'
           >
             {t('about')}

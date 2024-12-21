@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { FancyMultiSelect } from '@/pages/write/components/ui/fancy-multi-select';
 import { createBlogFormSchema } from '@/pages/write/utils/schemas/createBlogFormSchema';
+import { AUTH_PATHS } from '@/routes/protected/is-authorized/auth/enums';
 import { insertBlog, uploadImage } from '@/supabase/api/blogs';
 import { BlogsInsertPayload } from '@/supabase/api/blogs/index.types';
 import { Tag } from '@/supabase/api/tags/index.types';
@@ -84,7 +85,7 @@ const BlogForm: React.FC = () => {
         description: 'Please log in to create a blog.',
         variant: 'destructive',
       });
-      navigate('/login', { state: { from: location.pathname } });
+      navigate(AUTH_PATHS.LOGIN, { state: { from: location.pathname } });
       return;
     }
 

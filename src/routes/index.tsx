@@ -1,39 +1,24 @@
 import { Layout } from '@/components/layout';
-import {
-  Home,
-  Write,
-  About,
-  Login,
-  Register,
-  Profile,
-  NotFound,
-  Author,
-  EditProfile,
-} from '@/pages';
-import IsAuthorizedGuard from '@/routes/protected/is-authorized-guard';
-import IsUnauthorizedGuard from '@/routes/protected/is-unauthorized-guard';
+import { Home, NotFound } from '@/pages';
+import { AUTH_ROUTES } from '@/routes/protected/is-authorized/auth/auth-routes';
+import IsAuthorizedGuard from '@/routes/protected/is-authorized/is-authorized-guard';
+import IsUnauthorizedGuard from '@/routes/protected/is-unauthorized/is-unauthorized-guard';
+import { PROFILE_ROUTES } from '@/routes/protected/is-unauthorized/profile/profile-routes';
+import { DEFAULT_ROUTES } from '@/routes/unprotected/default-routes';
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
 
-export const router = createBrowserRouter(
+export const appRouter = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<Layout />}>
-        <Route path='/' element={<Home />} />
-        <Route path='/write' element={<Write />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/author' element={<Author />} />
-        <Route element={<IsAuthorizedGuard />}>
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-        </Route>
-        <Route element={<IsUnauthorizedGuard />}>
-          <Route path='/profile/:username' element={<Profile />} />
-          <Route path='/profile/edit' element={<EditProfile />} />
-        </Route>
+        <Route index element={<Home />} />
+        {DEFAULT_ROUTES}
+        <Route element={<IsAuthorizedGuard />}>{AUTH_ROUTES}</Route>
+        <Route element={<IsUnauthorizedGuard />}>{PROFILE_ROUTES}</Route>
       </Route>
 
       <Route path='*' element={<NotFound />} />

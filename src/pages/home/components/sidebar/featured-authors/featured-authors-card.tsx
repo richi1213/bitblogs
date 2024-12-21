@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { getInitials } from '@/utils/string-utils';
+import { DEFAULT_PATHS } from '@/routes/unprotected/enums';
 
 type Author = {
   name: string;
@@ -52,7 +53,7 @@ const FeaturedAuthorsCard: React.FC<FeaturedAuthorsProps> = ({
                 {getInitials(author.name)}
               </AvatarFallback>
             </Avatar>
-            <Link to='/author'>
+            <Link to={DEFAULT_PATHS.AUTHOR}>
               <div className='flex flex-col'>
                 <span className='font-medium hover:underline'>
                   {author.name}

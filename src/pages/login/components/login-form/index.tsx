@@ -25,6 +25,7 @@ import { useMutation } from '@tanstack/react-query';
 import Loading from '@/components/ui/loading';
 import useLoginHandlers from '@/pages/login/components/login-form/hooks/use-login-handlers';
 import { createLoginFormSchema } from '@/pages/login/utils/schemas/createLoginFormSchema';
+import { AUTH_PATHS } from '@/routes/protected/is-authorized/auth/enums';
 
 export function LoginForm() {
   const { t } = useTranslation('login-and-register-page');
@@ -114,7 +115,10 @@ export function LoginForm() {
 
         <div className='mt-4 text-center text-sm'>
           {t('dont-have-acc')}{' '}
-          <Link to='/register' className='text-primary hover:underline'>
+          <Link
+            to={AUTH_PATHS.REGISTER}
+            className='text-primary hover:underline'
+          >
             {t('sign-up')}
           </Link>
         </div>

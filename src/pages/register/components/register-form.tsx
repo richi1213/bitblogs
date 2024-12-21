@@ -24,6 +24,7 @@ import {
 import { Input } from '@/components/ui/input';
 import Loading from '@/components/ui/loading';
 import { createRegisterFormSchema } from '@/pages/register/utils/schemas/createRegisterFormSchema';
+import { AUTH_PATHS } from '@/routes/protected/is-authorized/auth/enums';
 
 export function RegisterForm() {
   const { t } = useTranslation('login-and-register-page');
@@ -172,8 +173,8 @@ export function RegisterForm() {
           </form>
         </Form>
         <div className='mt-4 text-center text-sm'>
-          {t('already-have-acc')}{' '}
-          <Link to='/login' className='text-primary hover:underline'>
+          {t('already-have-acc')}
+          <Link to={AUTH_PATHS.LOGIN} className='text-primary hover:underline'>
             {t('login')}
           </Link>
         </div>

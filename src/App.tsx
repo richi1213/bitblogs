@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-router-dom';
-import { router } from '@/routes';
+import { appRouter } from '@/routes';
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/atoms/auth';
@@ -31,7 +31,7 @@ const App: React.FC = () => {
   return (
     <BlogProvider>
       <TagProvider>
-        <RouterProvider router={router} />
+        <RouterProvider router={appRouter} />
       </TagProvider>
     </BlogProvider>
   );
