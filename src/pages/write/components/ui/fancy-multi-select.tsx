@@ -117,7 +117,7 @@ export function FancyMultiSelect({
               <CommandGroup className='h-full overflow-auto'>
                 {selectables.map((tag) => (
                   <CommandItem
-                    key={tag.slug}
+                    key={tag.id}
                     onMouseDown={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
