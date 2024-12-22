@@ -1,7 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { register } from '@/supabase/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -25,6 +23,7 @@ import { Input } from '@/components/ui/input';
 import Loading from '@/components/ui/loading';
 import { createRegisterFormSchema } from '@/pages/register/utils/schemas/createRegisterFormSchema';
 import { AUTH_PATHS } from '@/routes/protected/is-authorized/auth/enums';
+import { useRegisterUser } from '@/pages/register/hooks/react-query/mutations/use-register-user';
 
 export function RegisterForm() {
   const { t } = useTranslation('login-and-register-page');
@@ -45,19 +44,7 @@ export function RegisterForm() {
     },
   });
 
-  const {
-    mutate: registerAuthor,
-    status,
-    error,
-  } = useMutation({
-    mutationFn: register,
-    onSuccess: (data) => {
-      console.log('Registration successful:', data);
-    },
-    onError: (err) => {
-      console.error('Registration error:', err);
-    },
-  });
+  const { mutate: registerAuthor, status, error } = useRegisterUser();
 
   const onSubmit = (values: FormFields) => {
     registerAuthor({

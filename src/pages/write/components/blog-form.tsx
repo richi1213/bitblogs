@@ -11,16 +11,13 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { BLOG_QUERY_KEYS } from '@/context/blogs/enums';
 import { useToast } from '@/hooks/use-toast';
 import { FancyMultiSelect } from '@/pages/write/components/ui/fancy-multi-select';
+import { useCreateBlog } from '@/pages/write/hooks/react-query/mutations/use-create-blog';
 import { createBlogFormSchema } from '@/pages/write/utils/schemas/createBlogFormSchema';
 import { AUTH_PATHS } from '@/routes/protected/is-authorized/auth/enums';
-import { insertBlog, uploadImage } from '@/supabase/api/blogs';
-import { BlogsInsertPayload } from '@/supabase/api/blogs/index.types';
 import { Tag } from '@/supabase/api/tags/index.types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAtom, useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,7 +26,6 @@ import { z } from 'zod';
 const BlogForm: React.FC = () => {
   const user = useAtomValue(userAtom);
   const [formState, setFormState] = useAtom(formAtom);
-  const queryClient = useQueryClient();
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -44,38 +40,12 @@ const BlogForm: React.FC = () => {
     defaultValues: formState || defaultFormState,
   });
 
-  const { mutate } = useMutation({
-    mutationFn: async (formValues: FormFields) => {
-      const imageUrl = await uploadImage(formValues.imageFile);
-      const insertBlogPayload: BlogsInsertPayload = {
-        title_en: formValues.titleEn,
-        title_ka: formValues.titleKa,
-        description_en: formValues.descriptionEn,
-        description_ka: formValues.descriptionKa,
-        image_url: imageUrl || '',
-        user_id: user.userInfo?.id,
-        tag_ids: formValues.tags,
-      };
-      return await insertBlog(insertBlogPayload);
-    },
-    onSuccess: () => {
-      toast({
-        variant: 'default',
-        description: 'You have successfully posted your blog!',
-      });
-      queryClient.invalidateQueries({ queryKey: [BLOG_QUERY_KEYS.BLOGS] });
+  const { mutate } = useCreateBlog({
+    onSuccessCallback: () => {
       form.reset();
       localStorage.removeItem('blogFormState');
       setFormState(defaultFormState);
       navigate('/');
-    },
-    onError: (error) => {
-      console.error(error);
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to create blog.',
-        variant: 'destructive',
-      });
     },
   });
 
@@ -91,7 +61,6 @@ const BlogForm: React.FC = () => {
     }
 
     mutate(formValues);
-    console.log(formValues);
   };
 
   const handleChange = (
