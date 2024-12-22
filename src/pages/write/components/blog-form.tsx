@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { BLOG_QUERY_KEYS } from '@/context/blogs/enums';
 import { useToast } from '@/hooks/use-toast';
 import { FancyMultiSelect } from '@/pages/write/components/ui/fancy-multi-select';
 import { createBlogFormSchema } from '@/pages/write/utils/schemas/createBlogFormSchema';
@@ -62,7 +63,7 @@ const BlogForm: React.FC = () => {
         variant: 'default',
         description: 'You have successfully posted your blog!',
       });
-      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: [BLOG_QUERY_KEYS.BLOGS] });
       form.reset();
       localStorage.removeItem('blogFormState');
       setFormState(defaultFormState);

@@ -7,19 +7,20 @@ import {
 import { Dot, User } from 'lucide-react';
 import { BlogCardProps } from '@/pages/home/components/blog-card-wrapper/blog-card/blog-card.types';
 import { formatBlogDate } from '@/utils/dates/date-formatter';
-import { useQuery } from '@tanstack/react-query';
-import { fetchUserProfile } from '@/supabase/auth';
 import Loading from '@/components/ui/loading';
-import { fetchTagsByIds } from '@/supabase/api/tags';
 import { Badge } from '@/components/ui/badge';
+import { useBlogData } from '@/pages/home/hooks/react-query/queries/use-blog-data';
 
 const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
-  if (!blog) {
-    return <div>No blog data available</div>;
-  }
+  if (!blog) <div>No blog data available</div>;
 
   const { title_en, created_at, image_url, description_en, user_id, tag_ids } =
     blog;
+
+  const { authorProfile, tags, isAuthorLoading, areTagsLoading } = useBlogData(
+    user_id as string,
+    tag_ids as number[],
+  );
 
   const blogImageUrl = image_url
     ? `${import.meta.env.VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL}/${image_url}`
@@ -27,21 +28,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
 
   const formattedDate = formatBlogDate(created_at);
 
-  const { data: authorProfile, isLoading: isAuthorLoading } = useQuery({
-    queryKey: ['userProfile', user_id],
-    queryFn: () => fetchUserProfile(user_id as string),
-    enabled: !!user_id,
-  });
-
-  const { data: tags, isLoading: areTagsLoading } = useQuery({
-    queryKey: ['tags', tag_ids],
-    queryFn: () => fetchTagsByIds(tag_ids || []),
-    enabled: !!(tag_ids && tag_ids.length > 0),
-  });
-
-  if (isAuthorLoading || areTagsLoading) {
-    return <Loading />;
-  }
+  if (isAuthorLoading || areTagsLoading) <Loading />;
 
   const authorName = authorProfile?.full_name_en || 'Unknown Author';
 

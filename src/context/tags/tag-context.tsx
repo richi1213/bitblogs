@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { TagContextType } from '@/context/tags/tag-context.types';
 import { Tag } from '@/supabase/api/tags/index.types';
 import { fetchAllTags } from '@/supabase/api/tags';
+import { TAGS_QUERY_KEYS } from '@/context/tags/enums';
 
 const TagContext = createContext<TagContextType | null>(null);
 
@@ -10,7 +11,7 @@ export const TagProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const { data: tags } = useQuery<Tag[] | null>({
-    queryKey: ['tags'],
+    queryKey: [TAGS_QUERY_KEYS.TAGS],
     queryFn: () => fetchAllTags(),
   });
 
