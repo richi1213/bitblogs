@@ -116,7 +116,7 @@ export function LoginForm() {
         <div className='mt-4 text-center text-sm'>
           {t('dont-have-acc')}{' '}
           <Link
-            to={AUTH_PATHS.REGISTER}
+            to={`/${AUTH_PATHS.REGISTER}`}
             className='text-primary hover:underline'
           >
             {t('sign-up')}
