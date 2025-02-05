@@ -13,7 +13,7 @@ export const LanguagePicker: React.FC = () => {
   return (
     <div className='relative'>
       <button
-        className='text-foreground hover:text-accent focus:outline-none'
+        className='text-foreground hover:text-accent focus:outline-hidden'
         onClick={() => setIsOpen(!isOpen)}
       >
         <Globe className='h-5 w-5' />
@@ -25,7 +25,7 @@ export const LanguagePicker: React.FC = () => {
           <ul className='py-1 text-sm'>
             <li>
               <button
-                className='block w-full px-4 py-2 text-left text-popover-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none'
+                className='block w-full px-4 py-2 text-left text-popover-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-hidden'
                 onClick={() => changeLanguage('en')}
               >
                 English
@@ -33,7 +33,7 @@ export const LanguagePicker: React.FC = () => {
             </li>
             <li>
               <button
-                className='block w-full px-4 py-2 text-left text-popover-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none'
+                className='block w-full px-4 py-2 text-left text-popover-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-hidden'
                 onClick={() => changeLanguage('ka')}
               >
                 ქართული

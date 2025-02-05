@@ -23,7 +23,7 @@ const ProfileDetails: React.FC = () => {
           className='mb-4 mt-0 border-4 border-primary md:mb-0 md:mr-8 md:mt-6'
           size='extraLarge'
         />
-        <div className='flex flex-grow flex-col items-center md:items-start'>
+        <div className='flex grow flex-col items-center md:items-start'>
           <CardHeader>
             <CardTitle className='mb-2 text-3xl'>
               {user.userInfo?.full_name_en}

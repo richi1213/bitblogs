@@ -23,7 +23,7 @@ const AboutTabContent: React.FC = () => {
   ];
   return (
     <TabsContent value='about'>
-      <Card className='rounded-xl border bg-card text-card-foreground shadow'>
+      <Card className='rounded-xl border bg-card text-card-foreground shadow-sm'>
         <CardHeader className='text-sm font-semibold leading-none tracking-tight'>
           {`About ${user.userInfo?.full_name_en}`}
         </CardHeader>

@@ -17,7 +17,7 @@ const AuthorDetails = () => {
         <Avatar className='mb-4 mt-0 h-32 w-32 border-4 border-primary md:mb-0 md:mr-8 md:mt-6'>
           <AvatarFallback className='text-xl'>JD</AvatarFallback>
         </Avatar>
-        <div className='flex flex-grow flex-col items-center md:items-start'>
+        <div className='flex grow flex-col items-center md:items-start'>
           <CardHeader>
             <CardTitle className='mb-2 text-3xl'>Jane Doe</CardTitle>
           </CardHeader>
