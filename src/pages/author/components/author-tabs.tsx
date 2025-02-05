@@ -42,7 +42,7 @@ const AuthorTabs: React.FC = () => {
           /> */}
         </TabsContent>
         <TabsContent value='about'>
-          <Card className='rounded-xl border bg-card text-card-foreground shadow'>
+          <Card className='rounded-xl border bg-card text-card-foreground shadow-sm'>
             <CardHeader className='text-sm font-semibold leading-none tracking-tight'>
               About Jane Doe
             </CardHeader>

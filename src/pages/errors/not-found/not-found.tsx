@@ -14,7 +14,7 @@ export default function NotFound() {
         </div>
         <Link
           to='/'
-          className='inline-flex h-10 items-center rounded-md bg-background px-8 text-sm font-medium text-foreground shadow transition-colors hover:bg-gray-900/90 hover:text-white focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50'
+          className='inline-flex h-10 items-center rounded-md bg-background px-8 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-gray-900/90 hover:text-white focus-visible:outline-hidden focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50'
         >
           Return to website
         </Link>

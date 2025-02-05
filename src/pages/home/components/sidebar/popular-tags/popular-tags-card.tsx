@@ -22,7 +22,7 @@ const PopularTagsCard: React.FC<PopularTagsProps> = ({
   const { t } = useTranslation('home-page');
 
   return (
-    <Card className='w-full max-w-md bg-background shadow-sm'>
+    <Card className='w-full max-w-md bg-background shadow-xs'>
       <CardHeader className='pb-3'>
         <CardTitle className='text-lg font-semibold'>
           {t('popular-tags')}
